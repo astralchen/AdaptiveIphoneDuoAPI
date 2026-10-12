@@ -359,11 +359,11 @@
 			};
 			buildConfigurationList = F34972CFCCB3BCC89726BF25 /* Build configuration list for PBXProject "AdaptiveDuoLab" */;
 			compatibilityVersion = "Xcode 14.0";
-			developmentRegion = en;
+			developmentRegion = "zh-Hans";
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				Base,
-				en,
+				"zh-Hans",
 			);
 			mainGroup = 5EA00A6345E090BC5260ED82;
 			productRefGroup = BE72697C8C60944811E71950 /* Products */;
@@ -541,6 +541,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) DUO_SDK";
 				SWIFT_STRICT_CONCURRENCY = complete;
 				SWIFT_VERSION = 6.0;
 				VALIDATE_PRODUCT = YES;
@@ -630,6 +631,7 @@
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) DUO_SDK";
 				SWIFT_STRICT_CONCURRENCY = complete;
 				SWIFT_VERSION = 6.0;
 			};

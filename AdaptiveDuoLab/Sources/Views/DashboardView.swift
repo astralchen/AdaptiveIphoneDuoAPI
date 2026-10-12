@@ -18,8 +18,8 @@ struct DashboardView: View {
                 height: proxy.size.height,
                 dynamicTypeSize: dynamicTypeSize
             )
-            // A demo content budget, independent of device model or orientation.
-            // Large text and short windows reserve the detail area for records.
+            // 根据演示内容所需空间判断，与设备型号或屏幕方向无关。
+            // 字体较大或窗口较矮时，将详情区域优先留给记录内容。
             let usesCompactControls = proxy.size.height < 520 || dynamicTypeSize >= .xxxLarge
 
             ZStack {
@@ -36,7 +36,7 @@ struct DashboardView: View {
 
                 VStack(spacing: 14) {
                     if usesCompactControls {
-                        Text(decision.usesGrid ? "\(decision.columnCount)-column grid" : "Adaptive list")
+                        Text(decision.usesGrid ? "\(decision.columnCount) 列网格" : "自适应列表")
                             .font(.caption.bold())
                             .foregroundStyle(.secondary)
                             .fixedSize(horizontal: false, vertical: true)
@@ -56,7 +56,7 @@ struct DashboardView: View {
                 .padding(.horizontal, decision.contentPadding)
                 .padding(.top, 12)
             }
-            .navigationTitle(usesCompactControls ? "Adaptive Workspace" : selectedCategory.rawValue)
+            .navigationTitle(usesCompactControls ? "自适应工作区" : selectedCategory.title)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 if usesCompactControls {
@@ -67,7 +67,7 @@ struct DashboardView: View {
                         Button {
                             showsAudit = true
                         } label: {
-                            Label("Layout Review", systemImage: "checkmark.seal")
+                            Label("布局检查", systemImage: "checkmark.seal")
                         }
                         .labelStyle(.iconOnly)
                         .accessibilityIdentifier("audit.open")
@@ -79,37 +79,37 @@ struct DashboardView: View {
 
     private var compactOptionsMenu: some View {
         Menu {
-            Section("Layout") {
+            Section("布局") {
                 ForEach(CollectionPresentation.allCases) { option in
                     Button {
                         withAnimation(.snappy) {
                             presentation = option
                         }
                     } label: {
-                        Label(option.rawValue, systemImage: option.symbol)
+                        Label(option.title, systemImage: option.symbol)
                     }
                     .accessibilityIdentifier("layout.\(option.rawValue.lowercased())")
                 }
             }
 
             Menu {
-                Picker("Preview pose", selection: $pose) {
+                Picker("预览姿态", selection: $pose) {
                     ForEach(DemoPose.allCases) { option in
-                        Label(option.rawValue, systemImage: option.symbol)
+                        Label(option.title, systemImage: option.symbol)
                             .tag(option)
                     }
                 }
             } label: {
-                Label(pose.rawValue, systemImage: pose.symbol)
+                Label(pose.title, systemImage: pose.symbol)
             }
-            .accessibilityLabel("Preview pose")
-            .accessibilityValue(pose.rawValue)
+            .accessibilityLabel("预览姿态")
+            .accessibilityValue(pose.title)
             .accessibilityIdentifier("pose.menu")
         } label: {
-            Label("Workspace options", systemImage: "slider.horizontal.3")
+            Label("工作区选项", systemImage: "slider.horizontal.3")
         }
         .labelStyle(.iconOnly)
-        .accessibilityValue(presentation.rawValue)
+        .accessibilityValue(presentation.title)
         .accessibilityIdentifier("layout.menu")
     }
 
@@ -181,7 +181,7 @@ private struct DashboardHeader: View {
 
     private var heading: some View {
         VStack(alignment: .leading, spacing: 4) {
-            Text("Adaptive Workspace")
+            Text("自适应工作区")
                 .font(.largeTitle.bold())
             Text(layoutExplanation)
                 .font(.subheadline)
@@ -192,10 +192,10 @@ private struct DashboardHeader: View {
 
     private var layoutExplanation: String {
         if pose == .bookFold && decision.composition == .single {
-            return "Book preview uses one region when available space or text size requires it."
+            return "当可用空间或文字大小受限时，书本预览使用单一区域。"
         }
         if pose == .tabletop && decision.composition == .single {
-            return "Tabletop preview uses one collection when window height or text size requires it."
+            return "当窗口高度或文字大小受限时，桌面预览使用单一集合。"
         }
         return pose.explanation
     }
@@ -204,7 +204,7 @@ private struct DashboardHeader: View {
         Button {
             showsAudit = true
         } label: {
-            Label("Layout Review", systemImage: "checkmark.seal")
+            Label("布局检查", systemImage: "checkmark.seal")
         }
         .buttonStyle(.borderedProminent)
         .fixedSize(horizontal: true, vertical: false)
@@ -221,16 +221,16 @@ private struct DashboardHeader: View {
                     Button {
                         select(option)
                     } label: {
-                        Label(option.rawValue, systemImage: option.symbol)
+                        Label(option.title, systemImage: option.symbol)
                     }
                     .accessibilityIdentifier("layout.\(option.rawValue.lowercased())")
                 }
             } label: {
-                Label(presentation.rawValue, systemImage: presentation.symbol)
+                Label(presentation.title, systemImage: presentation.symbol)
             }
             .buttonStyle(.bordered)
-            .accessibilityLabel("Layout")
-            .accessibilityValue(presentation.rawValue)
+            .accessibilityLabel("布局")
+            .accessibilityValue(presentation.title)
             .accessibilityIdentifier("layout.menu")
         }
     }
@@ -249,7 +249,7 @@ private struct DashboardHeader: View {
             Button {
                 select(option)
             } label: {
-                Label(option.rawValue, systemImage: option.symbol)
+                Label(option.title, systemImage: option.symbol)
                     .fixedSize(horizontal: true, vertical: false)
             }
             .buttonStyle(.borderedProminent)
@@ -258,7 +258,7 @@ private struct DashboardHeader: View {
             Button {
                 select(option)
             } label: {
-                Label(option.rawValue, systemImage: option.symbol)
+                Label(option.title, systemImage: option.symbol)
                     .fixedSize(horizontal: true, vertical: false)
             }
             .buttonStyle(.bordered)
@@ -274,21 +274,21 @@ private struct DashboardHeader: View {
 
     private var poseControl: some View {
         Menu {
-            Picker("Preview pose", selection: $pose) {
+            Picker("预览姿态", selection: $pose) {
                 ForEach(DemoPose.allCases) { option in
-                    Label(option.rawValue, systemImage: option.symbol)
+                    Label(option.title, systemImage: option.symbol)
                         .tag(option)
                 }
             }
         } label: {
-            Label(pose.rawValue, systemImage: pose.symbol)
+            Label(pose.title, systemImage: pose.symbol)
         }
         .buttonStyle(.bordered)
         .accessibilityIdentifier("pose.menu")
     }
 
     private var decisionBadge: some View {
-        Text(decision.usesGrid ? "\(decision.columnCount)-column grid" : "Adaptive list")
+        Text(decision.usesGrid ? "\(decision.columnCount) 列网格" : "自适应列表")
             .font(.caption.bold())
             .padding(.horizontal, 12)
             .padding(.vertical, 8)
@@ -337,7 +337,7 @@ private struct BookFoldLayout: View {
     var body: some View {
         HStack(spacing: 0) {
             DuoRegion(
-                title: "Leading region",
+                title: "起始侧区域",
                 items: items.enumerated().compactMap {
                     $0.offset.isMultiple(of: 2) ? $0.element : nil
                 }
@@ -350,7 +350,7 @@ private struct BookFoldLayout: View {
             )
             .frame(width: 26)
             .overlay {
-                Text("FOLD")
+                Text("折叠处")
                     .font(.caption2.bold())
                     .foregroundStyle(.white.opacity(0.8))
                     .fixedSize()
@@ -358,7 +358,7 @@ private struct BookFoldLayout: View {
             }
 
             DuoRegion(
-                title: "Trailing region",
+                title: "末尾侧区域",
                 items: items.enumerated().compactMap {
                     $0.offset.isMultiple(of: 2) ? nil : $0.element
                 }
@@ -401,9 +401,9 @@ private struct TabletopLayout: View {
                 Image(systemName: "rectangle.split.1x2")
                     .font(.system(size: 42))
                     .foregroundStyle(.indigo)
-                Text("Content region")
+                Text("内容区域")
                     .font(.title2.bold())
-                Text("High-visibility content stays above the simulated hinge.")
+                Text("醒目内容保持在模拟铰链上方。")
                     .foregroundStyle(.secondary)
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -413,7 +413,7 @@ private struct TabletopLayout: View {
                 .fill(.black.opacity(0.55))
                 .frame(height: 20)
                 .overlay {
-                    Text("SIMULATED HINGE")
+                    Text("模拟铰链")
                         .font(.caption2.bold())
                         .foregroundStyle(.white.opacity(0.82))
                 }

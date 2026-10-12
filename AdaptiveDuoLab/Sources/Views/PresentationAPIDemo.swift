@@ -4,48 +4,48 @@ struct PresentationAPIDemo: View {
     @State private var showsSheet = false
     @State private var showsPopover = false
     @State private var showsAlert = false
-    @State private var draft = "Review adaptive layout"
-    @State private var lastAction = "No action yet"
+    @State private var draft = "检查自适应布局"
+    @State private var lastAction = "尚未执行操作"
 
     var body: some View {
         Form {
-            Section("Presentations") {
-                Button("Edit in a sheet") { showsSheet = true }
+            Section("呈现方式") {
+                Button("在 Sheet 中编辑") { showsSheet = true }
                     .accessibilityIdentifier("presentations.sheet")
-                Button("Show popover") { showsPopover = true }
+                Button("显示 Popover") { showsPopover = true }
                     .popover(isPresented: $showsPopover) {
                         VStack(alignment: .leading, spacing: 16) {
-                            Text("Context for this action").font(.headline)
-                            Text("The system adapts the presentation to available space.")
-                            Button("Dismiss") { showsPopover = false }
+                            Text("此操作的上下文").font(.headline)
+                            Text("系统会根据可用空间调整呈现方式。")
+                            Button("关闭") { showsPopover = false }
                         }
                         .padding()
                     }
-                Button("Show alert") { showsAlert = true }
-                Menu("Actions", systemImage: "ellipsis.circle") {
-                    Button("Mark reviewed", systemImage: "checkmark") { lastAction = "Reviewed" }
-                    Button("Pin note", systemImage: "pin") { lastAction = "Pinned" }
+                Button("显示提醒") { showsAlert = true }
+                Menu("操作", systemImage: "ellipsis.circle") {
+                    Button("标记为已检查", systemImage: "checkmark") { lastAction = "已检查" }
+                    Button("置顶笔记", systemImage: "pin") { lastAction = "已置顶" }
                 }
             }
-            Section("Shared state") {
+            Section("共享状态") {
                 Text(draft).accessibilityIdentifier("presentations.draftSummary")
-                LabeledContent("Last action", value: lastAction)
+                LabeledContent("上次操作", value: lastAction)
             }
-            Section("Try it") {
-                Text("Keep the sheet open while resizing, rotating, or changing the supported device configuration. Your draft remains in the parent view.")
+            Section("试一试") {
+                Text("保持 Sheet 打开，尝试调整窗口大小、旋转设备或更改受支持的设备配置。草稿会保留在父视图中。")
             }
         }
-        .navigationTitle("Presentations")
+        .navigationTitle("呈现方式")
         .sheet(isPresented: $showsSheet) {
             NavigationStack {
                 Form {
-                    TextField("Note", text: $draft, axis: .vertical)
+                    TextField("笔记", text: $draft, axis: .vertical)
                         .accessibilityIdentifier("presentations.draft")
                 }
-                .navigationTitle("Edit note")
+                .navigationTitle("编辑笔记")
                 .toolbar {
                     ToolbarItem(placement: .confirmationAction) {
-                        Button("Done") { showsSheet = false }
+                        Button("完成") { showsSheet = false }
                             .accessibilityIdentifier("presentations.done")
                     }
                 }
@@ -53,11 +53,11 @@ struct PresentationAPIDemo: View {
             .presentationDetents([.medium, .large])
             .presentationDragIndicator(.visible)
         }
-        .alert("Mark this note reviewed?", isPresented: $showsAlert) {
-            Button("Cancel", role: .cancel) {}
-            Button("Mark reviewed") { lastAction = "Reviewed" }
+        .alert("将此笔记标记为已检查？", isPresented: $showsAlert) {
+            Button("取消", role: .cancel) {}
+            Button("标记为已检查") { lastAction = "已检查" }
         } message: {
-            Text("This changes only the local example state.")
+            Text("此操作仅更改当前示例的本地状态。")
         }
     }
 }

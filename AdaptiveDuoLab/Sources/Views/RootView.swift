@@ -59,23 +59,23 @@ struct RootView: View {
             .tint(.indigo)
     }
 
-    // Keep app state above the native container. Preview poses change workspace
-    // content only; the system remains responsible for tab bar placement.
+    // 在原生容器的上层管理应用状态。预览姿态仅改变工作区内容，
+    // 标签栏的位置仍由系统决定。
     @ViewBuilder
     private var tabs: some View {
         if #available(iOS 18.0, *) {
             TabView(selection: $selectedTab) {
-                Tab("Workspace", systemImage: "square.grid.2x2", value: AppTab.workspace) {
+                Tab("工作区", systemImage: "square.grid.2x2", value: AppTab.workspace) {
                     workspace
                 }
                 .accessibilityIdentifier(AppTab.workspace.accessibilityIdentifier)
 
-                Tab("Review", systemImage: "checkmark.seal", value: AppTab.review) {
+                Tab("检查", systemImage: "checkmark.seal", value: AppTab.review) {
                     review
                 }
                 .accessibilityIdentifier(AppTab.review.accessibilityIdentifier)
 
-                Tab("Settings", systemImage: "gearshape", value: AppTab.settings) {
+                Tab("设置", systemImage: "gearshape", value: AppTab.settings) {
                     settings
                 }
                 .accessibilityIdentifier(AppTab.settings.accessibilityIdentifier)
@@ -98,7 +98,7 @@ struct RootView: View {
     }
 
     private func tabLabel(_ tab: AppTab) -> some View {
-        Label(tab.rawValue, systemImage: tab.symbol)
+        Label(tab.title, systemImage: tab.symbol)
             .accessibilityIdentifier(tab.accessibilityIdentifier)
     }
 
@@ -107,12 +107,12 @@ struct RootView: View {
             List(selection: $selectedCategory) {
                 ForEach(WorkCategory.allCases) { category in
                     NavigationLink(value: category) {
-                        Label(category.rawValue, systemImage: category.symbol)
+                        Label(category.title, systemImage: category.symbol)
                     }
                     .accessibilityIdentifier("category.\(category.rawValue.lowercased())")
                 }
             }
-            .navigationTitle("Adaptive Duo Lab")
+            .navigationTitle("Duo 自适应实验室")
         } detail: {
             DashboardView(
                 items: filteredItems,

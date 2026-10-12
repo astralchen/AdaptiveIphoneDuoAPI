@@ -1,14 +1,14 @@
 import SwiftUI
 
-/// The compile gate protects builds using an SDK that does not contain 27.1 symbols.
-/// The runtime check separately protects devices running an earlier OS.
+/// 通过条件编译兼容不包含 27.1 符号的 SDK。
+/// 另行通过运行时检查兼容运行较早系统版本的设备。
 struct SystemArrangementDemo: View {
     let items: [WorkItem]
     let category: WorkCategory
 
     var body: some View {
         content
-            .navigationTitle("System layout")
+            .navigationTitle("系统布局")
             .navigationBarTitleDisplayMode(.inline)
             .accessibilityIdentifier("apiLab.systemScreen")
     }
@@ -19,23 +19,23 @@ struct SystemArrangementDemo: View {
         if #available(iOS 27.1, *) {
             NativeArrangementContent(items: items, category: category)
         } else {
-            fallback("This build includes the native demo. Run iOS 27.1 or later to use it.")
+            fallback("此构建版本已包含原生示例，请在 iOS 27.1 或更高版本上运行。")
         }
         #else
-        fallback("Native API source is included but disabled in this build. Build with the iOS 27.1 SDK and DUO_SDK=1 to enable it.")
+        fallback("已包含原生 API 源代码，但当前构建未启用。使用 iOS 27.1 SDK 并设置 DUO_SDK=1 构建即可启用。")
         #endif
     }
 
     private func fallback(_ message: String) -> some View {
         List {
-            Section("Native example availability") {
+            Section("原生示例可用条件") {
                 Text(message).accessibilityIdentifier("apiLab.nativeStatus")
-                Text("The current build keeps a normal continuous list with no artificial hinge gap.")
+                Text("当前构建保留普通的连续列表，不会人为添加铰链间隙。")
             }
             Section {
                 APILabSummary(items: items, category: category)
             }
-            Section("All filtered records") {
+            Section("筛选后的全部记录") {
                 ForEach(items) { item in
                     WorkItemCard(item: item, compact: false)
                 }
@@ -50,16 +50,16 @@ private struct APILabSummary: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
-            Text("Summary").font(.title2.bold())
-            LabeledContent("Category", value: category.rawValue)
-            LabeledContent("Records", value: items.count.formatted())
+            Text("摘要").font(.title2.bold())
+            LabeledContent("分类", value: category.title)
+            LabeledContent("记录", value: items.count.formatted())
                 .accessibilityElement(children: .ignore)
-                .accessibilityLabel("Records")
+                .accessibilityLabel("记录")
                 .accessibilityValue(items.count.formatted())
                 .accessibilityIdentifier("apiLab.recordCount")
-            LabeledContent("Complete", value: items.filter { $0.status == .complete }.count.formatted())
-            LabeledContent("In progress", value: items.filter { $0.status == .inProgress }.count.formatted())
-            Text("Primary contains every filtered record. This summary remains reachable from the toolbar when a secondary region is not displayed.")
+            LabeledContent("已完成", value: items.filter { $0.status == .complete }.count.formatted())
+            LabeledContent("进行中", value: items.filter { $0.status == .inProgress }.count.formatted())
+            Text("主区域包含筛选后的全部记录。未显示次级区域时，仍可通过工具栏访问此摘要。")
                 .font(.footnote)
                 .foregroundStyle(.secondary)
         }
@@ -83,9 +83,9 @@ private struct NativeArrangementContent: View {
             ArrangementView {
                 ScrollView {
                     LazyVStack(alignment: .leading, spacing: 14) {
-                        Text("All \(items.count) records")
+                        Text("全部 \(items.count) 条记录")
                             .font(.headline)
-                            .accessibilityLabel("Records")
+                            .accessibilityLabel("记录")
                             .accessibilityValue(items.count.formatted())
                             .accessibilityIdentifier("apiLab.recordCount")
                         ForEach(items) { item in
@@ -101,11 +101,11 @@ private struct NativeArrangementContent: View {
                         APILabSummary(items: items, category: category)
                         SplitArrangementReadout()
                         Divider()
-                        Text("System geometry").font(.headline)
-                        LabeledContent("Active divisions", value: divisions.filter(\.isActive).count.formatted())
-                        LabeledContent("Active occlusions", value: occlusions.filter(\.isActive).count.formatted())
+                        Text("系统几何信息").font(.headline)
+                        LabeledContent("生效的分隔区域", value: divisions.filter(\.isActive).count.formatted())
+                        LabeledContent("生效的遮挡区域", value: occlusions.filter(\.isActive).count.formatted())
                         Text(hingeDescription).font(.footnote).foregroundStyle(.secondary)
-                        Text("ArrangementView chooses the relationship between these two regions. No angle thresholds or simulated-pose values drive this screen.")
+                        Text("ArrangementView 决定这两个区域的关系。此页面不由角度阈值或模拟姿态值驱动。")
                             .font(.footnote)
                     }
                     .padding()
@@ -125,27 +125,27 @@ private struct NativeArrangementContent: View {
                         ScrollView {
                             APILabSummary(items: items, category: category).padding()
                         }
-                        .navigationTitle("Summary")
+                        .navigationTitle("摘要")
                     } label: {
-                        Label("Summary", systemImage: "chart.bar")
+                        Label("摘要", systemImage: "chart.bar")
                     }
                     NavigationLink {
                         NativeRegionInspector()
                     } label: {
-                        Label("Inspect reserved regions", systemImage: "viewfinder")
+                        Label("查看保留区域", systemImage: "viewfinder")
                     }
                     NavigationLink {
                         NativeRegionAvoidanceDemo(items: items, category: category)
                     } label: {
-                        Label("Move a custom control", systemImage: "arrow.up.and.down.and.arrow.left.and.right")
+                        Label("移动自定义控件", systemImage: "arrow.up.and.down.and.arrow.left.and.right")
                     }
                     NavigationLink {
                         NativeOverlayArrangementDemo(items: items, category: category)
                     } label: {
-                        Label("Overlay arrangement", systemImage: "square.2.layers.3d")
+                        Label("叠层排列", systemImage: "square.2.layers.3d")
                     }
                 } label: {
-                    Label("System layout details", systemImage: "info.circle")
+                    Label("系统布局详情", systemImage: "info.circle")
                 }
                 .accessibilityIdentifier("apiLab.nativeDetails")
             }
@@ -153,9 +153,9 @@ private struct NativeArrangementContent: View {
     }
 
     private var hingeDescription: String {
-        guard receivedHingeEvent else { return "Hinge: awaiting a system event." }
-        guard let hinge else { return "Hinge: none reported by the latest event." }
-        return "Hinge angle: \(hinge.angle.degrees.formatted(.number.precision(.fractionLength(0))))°. Read-only diagnostic."
+        guard receivedHingeEvent else { return "铰链：等待系统事件。" }
+        guard let hinge else { return "铰链：最新事件未报告铰链信息。" }
+        return "铰链角度：\(hinge.angle.degrees.formatted(.number.precision(.fractionLength(0))))°。仅供只读诊断。"
     }
 }
 
@@ -164,22 +164,22 @@ private struct SplitArrangementReadout: View {
     @Environment(\.splitArrangementAxis) private var axis
 
     var body: some View {
-        LabeledContent("Split axis", value: axisDescription)
+        LabeledContent("分割轴向", value: axisDescription)
             .font(.footnote)
     }
 
     private var axisDescription: String {
         switch axis {
-        case .horizontal: "Horizontal"
-        case .vertical: "Vertical"
-        case nil: "Not split"
-        @unknown default: "System selected"
+        case .horizontal: "水平"
+        case .vertical: "垂直"
+        case nil: "未分割"
+        @unknown default: "系统选择"
         }
     }
 }
 
-/// A foreground/background relationship, kept separate from split navigation.
-/// Its controls read arrangement state, not a device name or a hinge threshold.
+/// 演示前景与背景的层级关系，与分栏导航保持独立。
+/// 控件读取排列状态，不依赖设备名称或铰链角度阈值。
 @available(iOS 27.1, *)
 private struct NativeOverlayArrangementDemo: View {
     let items: [WorkItem]
@@ -197,25 +197,25 @@ private struct NativeOverlayArrangementDemo: View {
         } secondary: {
             ScrollView {
                 VStack(alignment: .leading, spacing: 20) {
-                    Text("Review board").font(.largeTitle.bold())
-                    Text(category.rawValue).font(.title2)
+                    Text("检查看板").font(.largeTitle.bold())
+                    Text(category.title).font(.title2)
                     Text(selectedItems.count.formatted())
                         .font(.system(size: 76, weight: .semibold, design: .rounded))
                         .contentTransition(.numericText())
-                    Text(completedOnly ? "Completed records" : "All filtered records")
+                    Text(completedOnly ? "已完成的记录" : "筛选后的全部记录")
                         .font(.title3)
-                    Text("The controls are a foreground layer. When the system separates the layers, the controls expand in their own region.")
+                    Text("控件位于前景层。系统分离图层时，控件会在各自区域内展开。")
                         .foregroundStyle(.secondary)
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(24)
-                // A scrollable background can move clear of its overlay.
+                // 为背景内容预留滚动空间，使其能够移出覆盖层的遮挡范围。
                 .padding(.bottom, 240)
             }
             .background(.blue.opacity(0.08))
         }
         .arrangementViewStyle(.overlay.axes([.horizontal, .vertical]))
-        .navigationTitle("Overlay arrangement")
+        .navigationTitle("叠层排列")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
@@ -223,9 +223,9 @@ private struct NativeOverlayArrangementDemo: View {
                     List(selectedItems) { item in
                         WorkItemCard(item: item, compact: false)
                     }
-                    .navigationTitle("Review records")
+                    .navigationTitle("检查记录")
                 } label: {
-                    Label("Review records", systemImage: "list.bullet")
+                    Label("检查记录", systemImage: "list.bullet")
                 }
             }
         }
@@ -243,13 +243,13 @@ private struct OverlayReviewControls: View {
         ScrollView {
             VStack(alignment: .leading, spacing: 14) {
                 if zIndex == 0 {
-                    Text("Review controls").font(.title2.bold())
-                    Text("These controls now have their own region.")
+                    Text("检查控件").font(.title2.bold())
+                    Text("这些控件现在拥有独立区域。")
                         .font(.subheadline).foregroundStyle(.secondary)
                 }
-                Toggle("Completed only", isOn: $completedOnly)
+                Toggle("仅显示已完成", isOn: $completedOnly)
                     .accessibilityIdentifier("apiLab.overlayCompletedOnly")
-                Text("Showing \(count) records")
+                Text("显示 \(count) 条记录")
                     .font(.footnote).foregroundStyle(.secondary)
             }
             .padding(20)
@@ -265,7 +265,7 @@ private struct OverlayReviewControls: View {
 private struct NativeRegionAvoidanceDemo: View {
     let items: [WorkItem]
     let category: WorkCategory
-    // Keep the custom button hidden until its actual Dynamic Type size is known.
+    // 在确定自定义按钮适配 Dynamic Type 后的实际尺寸前，保持按钮隐藏。
     @State private var controlSize = CGSize.zero
     @State private var showsRegions = true
     @State private var prefersBottom = false
@@ -309,7 +309,7 @@ private struct NativeRegionAvoidanceDemo: View {
                 Button {
                     showsSummary = true
                 } label: {
-                    Label("Review records", systemImage: "checklist")
+                    Label("检查记录", systemImage: "checklist")
                         .font(.headline)
                         .padding(.horizontal, 18)
                         .padding(.vertical, 14)
@@ -328,8 +328,8 @@ private struct NativeRegionAvoidanceDemo: View {
         }
         .safeAreaInset(edge: .bottom) {
             VStack(alignment: .leading, spacing: 4) {
-                Text("Review stays clear of active regions. If it cannot fit, use Review in the toolbar.")
-                Text("Orange: active • Gray: inactive. Frames include interactive margins.")
+                Text("检查按钮会避开生效的区域。如果没有足够空间，请使用工具栏中的检查操作。")
+                Text("橙色：生效 • 灰色：未生效。区域边框已包含交互边距。")
                     .foregroundStyle(.secondary)
             }
             .font(.footnote)
@@ -337,20 +337,20 @@ private struct NativeRegionAvoidanceDemo: View {
             .padding()
             .background(.regularMaterial)
         }
-        .navigationTitle("Custom control placement")
+        .navigationTitle("自定义控件位置")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
-                Button("Review", systemImage: "checklist") { showsSummary = true }
+                Button("检查", systemImage: "checklist") { showsSummary = true }
                     .accessibilityIdentifier("apiLab.reviewFallback")
             }
             ToolbarItem(placement: .topBarTrailing) {
                 Menu {
-                    Toggle("Show reserved regions", isOn: $showsRegions)
-                    Toggle("Prefer bottom center", isOn: $prefersBottom)
-                    NavigationLink("Geometry details") { NativeRegionInspector() }
+                    Toggle("显示保留区域", isOn: $showsRegions)
+                    Toggle("优先底部居中", isOn: $prefersBottom)
+                    NavigationLink("几何信息详情") { NativeRegionInspector() }
                 } label: {
-                    Label("Placement options", systemImage: "slider.horizontal.3")
+                    Label("位置选项", systemImage: "slider.horizontal.3")
                 }
             }
         }
@@ -358,14 +358,14 @@ private struct NativeRegionAvoidanceDemo: View {
             NavigationStack {
                 List {
                     Section { APILabSummary(items: items, category: category) }
-                    Section("Records") {
+                    Section("记录") {
                         ForEach(items) { WorkItemCard(item: $0, compact: false) }
                     }
                 }
-                .navigationTitle("Review records")
+                .navigationTitle("检查记录")
                 .toolbar {
                     ToolbarItem(placement: .confirmationAction) {
-                        Button("Done") { showsSummary = false }
+                        Button("完成") { showsSummary = false }
                     }
                 }
             }
@@ -382,29 +382,29 @@ private struct NativeRegionInspector: View {
             let occlusions = proxy.reservedRegions(kind: .occlusion, options: .includeInactive)
             List {
                 Section {
-                    Text("These values describe this inspector's local coordinate space. Inactive regions are included explicitly; only active regions should affect avoidance decisions.")
-                    Text("Local size: \(number(proxy.size.width)) × \(number(proxy.size.height)) pt")
+                    Text("这些值描述当前检查器的局部坐标空间。此处显式包含未生效区域；避让决策应仅考虑生效区域。")
+                    Text("局部尺寸：\(number(proxy.size.width)) × \(number(proxy.size.height)) pt")
                 }
-                regionSection("Divisions", regions: divisions)
-                regionSection("Occlusions", regions: occlusions)
+                regionSection("分隔区域", regions: divisions)
+                regionSection("遮挡区域", regions: occlusions)
             }
         }
-        .navigationTitle("Reserved regions")
+        .navigationTitle("保留区域")
         .navigationBarTitleDisplayMode(.inline)
     }
 
     private func regionSection(_ title: String, regions: [ReservedRegion]) -> some View {
         Section(title) {
             if regions.isEmpty {
-                Text("No intersecting regions. This is a valid result.")
+                Text("没有相交的区域。这是有效结果。")
             }
             ForEach(Array(regions.enumerated()), id: \.offset) { index, region in
                 VStack(alignment: .leading, spacing: 6) {
-                    Text("Region \(index + 1): \(region.isActive ? "active" : "inactive")").font(.headline)
-                    Text("Origin: \(number(region.frame.minX)), \(number(region.frame.minY)) pt")
-                    Text("Size: \(number(region.frame.width)) × \(number(region.frame.height)) pt")
-                    Text("Margins: \(String(describing: region.margins))")
-                    Text("Identifier: \(String(describing: region.id))")
+                    Text("区域 \(index + 1)：\(region.isActive ? "生效" : "未生效")").font(.headline)
+                    Text("原点：\(number(region.frame.minX)), \(number(region.frame.minY)) pt")
+                    Text("尺寸：\(number(region.frame.width)) × \(number(region.frame.height)) pt")
+                    Text("边距：\(String(describing: region.margins))")
+                    Text("标识符：\(String(describing: region.id))")
                 }
                 .font(.footnote)
             }
@@ -412,7 +412,7 @@ private struct NativeRegionInspector: View {
     }
 
     private func number(_ value: CGFloat) -> String {
-        value.formatted(.number.precision(.fractionLength(1)))
+        Double(value).formatted(.number.precision(.fractionLength(1)))
     }
 }
 #endif

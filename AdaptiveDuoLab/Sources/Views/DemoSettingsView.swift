@@ -16,55 +16,55 @@ struct DemoSettingsView: View {
                 Button {
                     showsAPILab = true
                 } label: {
-                    Label("Open API Lab", systemImage: "curlybraces")
+                    Label("打开 API 实验室", systemImage: "curlybraces")
                 }
                 .accessibilityIdentifier("settings.apiLab")
             } header: {
-                Text("Apple API examples")
+                Text("Apple API 示例")
             } footer: {
-                Text("Explore what each API changes, its availability, and the live system-layout examples.")
+                Text("了解各个 API 的作用、可用条件，并体验实时系统布局示例。")
             }
 
             Section {
-                Picker("Category", selection: $category) {
+                Picker("分类", selection: $category) {
                     ForEach(WorkCategory.allCases) { option in
-                        Label(option.rawValue, systemImage: option.symbol)
+                        Label(option.title, systemImage: option.symbol)
                             .tag(option)
                     }
                 }
                 .accessibilityIdentifier("settings.category")
-                .accessibilityValue(category.rawValue)
+                .accessibilityValue(category.title)
 
-                Picker("Content mode", selection: $presentation) {
+                Picker("内容模式", selection: $presentation) {
                     ForEach(CollectionPresentation.allCases) { option in
-                        Label(option.rawValue, systemImage: option.symbol)
+                        Label(option.title, systemImage: option.symbol)
                             .tag(option)
                     }
                 }
                 .accessibilityIdentifier("settings.presentation")
-                .accessibilityValue(presentation.rawValue)
+                .accessibilityValue(presentation.title)
 
-                Picker("Preview pose", selection: $pose) {
+                Picker("预览姿态", selection: $pose) {
                     ForEach(DemoPose.allCases) { option in
-                        Label(option.rawValue, systemImage: option.symbol)
+                        Label(option.title, systemImage: option.symbol)
                             .tag(option)
                     }
                 }
                 .accessibilityIdentifier("settings.pose")
-                .accessibilityValue(pose.rawValue)
+                .accessibilityValue(pose.title)
             } header: {
-                Text("Workspace configuration")
+                Text("工作区配置")
             } footer: {
-                Text("Changes apply to Workspace and Review. Preview poses simulate content layouts; the system chooses the tab bar position.")
+                Text("更改会应用到工作区和检查页面。预览姿态用于模拟内容布局；标签栏位置由系统决定。")
             }
             .pickerStyle(.menu)
 
-            Section("Records") {
-                recordCount("In selected category", count: filteredItemCount, id: "settings.filteredCount")
-                recordCount("All records", count: totalItemCount, id: "settings.recordCount")
+            Section("记录") {
+                recordCount("当前分类", count: filteredItemCount, id: "settings.filteredCount")
+                recordCount("全部记录", count: totalItemCount, id: "settings.recordCount")
             }
         }
-        .navigationTitle("Settings")
+        .navigationTitle("设置")
         .fullScreenCover(isPresented: $showsAPILab) {
             APILabView(items: items, category: category)
         }

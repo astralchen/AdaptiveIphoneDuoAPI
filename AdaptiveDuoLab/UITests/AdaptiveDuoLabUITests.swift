@@ -44,28 +44,28 @@ final class AdaptiveDuoLabUITests: XCTestCase {
 
     func testAPILabUsesSharedRecordsAndCanDismiss() {
         let app = launch(tab: "Settings")
-        select("Engineering", from: "settings.category", in: app)
+        select("工程", from: "settings.category", in: app)
         let openLab = app.buttons["settings.apiLab"]
         XCTAssertTrue(openLab.waitForExistence(timeout: 5))
         openLab.tap()
-        XCTAssertTrue(app.navigationBars["API Lab"].waitForExistence(timeout: 3))
+        XCTAssertTrue(app.navigationBars["API 实验室"].waitForExistence(timeout: 3))
 
         let systemDemo = app.buttons["apiLab.systemDemo"]
         XCTAssertTrue(systemDemo.waitForExistence(timeout: 3))
         systemDemo.tap()
-        XCTAssertTrue(app.navigationBars["System layout"].waitForExistence(timeout: 3))
-        // Baseline builds show preparation text; native builds show the records.
-        // Either route preserves access to every record from the selected category.
+        XCTAssertTrue(app.navigationBars["系统布局"].waitForExistence(timeout: 3))
+        // 基线构建显示准备说明，原生构建显示记录。
+        // 两种路径均保留对所选分类中每条记录的访问能力。
         XCTAssertTrue(
             app.descendants(matching: .any)["apiLab.nativeStatus"].exists ||
             app.descendants(matching: .any)["apiLab.nativeRecords"].exists
         )
         assertValue("3", for: "apiLab.recordCount", in: app)
         app.navigationBars.buttons.element(boundBy: 0).tap()
-        XCTAssertTrue(app.navigationBars["API Lab"].waitForExistence(timeout: 3))
+        XCTAssertTrue(app.navigationBars["API 实验室"].waitForExistence(timeout: 3))
         app.buttons["apiLab.done"].tap()
         assertValue("8", for: "settings.recordCount", in: app)
-        assertValue("Engineering", for: "settings.category", in: app)
+        assertValue("工程", for: "settings.category", in: app)
         assertValue("3", for: "settings.filteredCount", in: app)
     }
 
@@ -83,7 +83,7 @@ final class AdaptiveDuoLabUITests: XCTestCase {
         )
 
         app.buttons["audit.open"].tap()
-        XCTAssertTrue(app.navigationBars["Layout Review"].waitForExistence(timeout: 3))
+        XCTAssertTrue(app.navigationBars["布局检查"].waitForExistence(timeout: 3))
         app.buttons["audit.done"].tap()
         XCTAssertTrue(app.buttons["audit.open"].waitForExistence(timeout: 3))
     }
@@ -92,9 +92,9 @@ final class AdaptiveDuoLabUITests: XCTestCase {
         let app = launch(tab: "Settings")
         assertValue("8", for: "settings.recordCount", in: app)
 
-        select("Engineering", from: "settings.category", in: app)
-        select("Grid", from: "settings.presentation", in: app)
-        select("Book Fold", from: "settings.pose", in: app)
+        select("工程", from: "settings.category", in: app)
+        select("网格", from: "settings.presentation", in: app)
+        select("书本折叠", from: "settings.pose", in: app)
         assertValue("3", for: "settings.filteredCount", in: app)
 
         openTab("Review", in: app)
@@ -110,18 +110,18 @@ final class AdaptiveDuoLabUITests: XCTestCase {
         assertReviewState(in: app)
 
         openTab("Settings", in: app)
-        assertValue("Engineering", for: "settings.category", in: app)
-        assertValue("Grid", for: "settings.presentation", in: app)
-        assertValue("Book Fold", for: "settings.pose", in: app)
+        assertValue("工程", for: "settings.category", in: app)
+        assertValue("网格", for: "settings.presentation", in: app)
+        assertValue("书本折叠", for: "settings.pose", in: app)
         assertValue("3", for: "settings.filteredCount", in: app)
     }
 
     func testReviewLaunchUsesExistingSeededData() {
         let app = launch(tab: "Review")
-        assertValue("All", for: "review.category", in: app)
+        assertValue("全部", for: "review.category", in: app)
         assertValue("8", for: "review.recordCount", in: app)
-        assertValue("Current Window", for: "review.pose", in: app)
-        assertValue("Automatic", for: "review.presentation", in: app)
+        assertValue("当前窗口", for: "review.pose", in: app)
+        assertValue("自动", for: "review.presentation", in: app)
         XCTAssertFalse(app.buttons["audit.done"].exists)
 
         openTab("Settings", in: app)
@@ -157,10 +157,10 @@ final class AdaptiveDuoLabUITests: XCTestCase {
     }
 
     private func openTab(_ title: String, in app: XCUIApplication) {
-        // Lookup by the native item label works without assuming a bar axis.
+        // 根据原生条目的标签查找，无需假定栏的排列轴向。
         let identifiedItem = app.buttons["tabs.\(title.lowercased())"]
         let item = identifiedItem.exists ? identifiedItem : app.buttons.matching(
-            NSPredicate(format: "label == %@", title)
+            NSPredicate(format: "label == %@", ["Workspace": "工作区", "Review": "检查", "Settings": "设置"][title] ?? title)
         ).firstMatch
         XCTAssertTrue(item.waitForExistence(timeout: 5))
         item.tap()
@@ -188,14 +188,14 @@ final class AdaptiveDuoLabUITests: XCTestCase {
     }
 
     private func assertReviewState(in app: XCUIApplication) {
-        assertValue("Engineering", for: "review.category", in: app)
-        assertValue("Grid", for: "review.presentation", in: app)
-        assertValue("Book Fold", for: "review.pose", in: app)
+        assertValue("工程", for: "review.category", in: app)
+        assertValue("网格", for: "review.presentation", in: app)
+        assertValue("书本折叠", for: "review.pose", in: app)
         assertValue("3", for: "review.recordCount", in: app)
     }
 
     private func showWorkspaceDetail(in app: XCUIApplication, category: String = "all") {
-        let dashboard = app.staticTexts["Adaptive Workspace"]
+        let dashboard = app.staticTexts["自适应工作区"]
         if !dashboard.waitForExistence(timeout: 3) {
             let categoryLink = app.buttons["category.\(category)"]
             XCTAssertTrue(categoryLink.waitForExistence(timeout: 5))

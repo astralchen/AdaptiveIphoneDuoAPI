@@ -1,8 +1,8 @@
 import Foundation
 
-/// Places one foreground control using geometry from its own container.
-/// Apple's ReservedRegion.frame already includes its interactive margins.
-/// Callers must not expand the frame by those margins a second time.
+/// 根据前景控件所在容器的几何信息确定其位置。
+/// Apple 的 ReservedRegion.frame 已包含交互边距。
+/// 调用方不得再次按这些边距扩展区域。
 enum ReservedRegionPlacement {
     struct Obstacle {
         let frame: CGRect
@@ -34,8 +34,8 @@ enum ReservedRegionPlacement {
         let idealX = preferredCenter.x - controlSize.width / 2
         let idealY = preferredCenter.y - controlSize.height / 2
 
-        // For axis-aligned rectangles a nearest valid position is at the
-        // preferred coordinate, a container edge, or an obstacle edge.
+        // 对于与坐标轴对齐的矩形，最近有效位置的坐标可从首选坐标、
+        // 容器边缘或障碍物边缘对应的候选坐标中选取。
         let xs = [clamp(idealX, minX, maxX), minX, maxX] + obstacles.flatMap {
             [clamp($0.minX - controlSize.width, minX, maxX), clamp($0.maxX, minX, maxX)]
         }

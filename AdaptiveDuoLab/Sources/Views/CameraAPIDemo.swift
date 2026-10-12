@@ -3,8 +3,8 @@ import Combine
 import SwiftUI
 import UIKit
 
-/// A real, opt-in camera workflow. Preview remains useful without a scene accessory.
-/// No microphone input, photo output, recording, or photo-library access is configured.
+/// 由用户主动启用的真实相机流程；没有 scene accessory 时仍可使用预览。
+/// 未配置麦克风输入、照片输出、录制功能或照片图库访问。
 struct CameraAPIDemo: View {
     @Environment(\.scenePhase) private var scenePhase
     @StateObject private var model = CameraDemoModel()
@@ -16,16 +16,16 @@ struct CameraAPIDemo: View {
                 NativeCameraDemo(model: model)
             } else {
                 CameraDemoScreen(model: model) {
-                    Text("The camera preview works here. The optional camera accessory requires iOS 27.1 or later.")
+                    Text("此处可使用相机预览。可选的相机附属显示功能需要 iOS 27.1 或更高版本。")
                 }
             }
             #else
             CameraDemoScreen(model: model) {
-                Text("The camera preview works here. Build with the iOS 27.1 SDK and DUO_SDK=1 to enable the native camera accessory.")
+                Text("此处可使用相机预览。使用 iOS 27.1 SDK 并设置 DUO_SDK=1 构建，可启用原生相机附属显示功能。")
             }
             #endif
         }
-        .navigationTitle("Camera accessory")
+        .navigationTitle("相机附属显示")
         .navigationBarTitleDisplayMode(.inline)
         .accessibilityIdentifier("apiLab.cameraScreen")
         .onDisappear { model.stop() }
@@ -36,13 +36,13 @@ struct CameraAPIDemo: View {
             for: AVCaptureSession.wasInterruptedNotification,
             object: model.engine.session
         ).receive(on: DispatchQueue.main)) { _ in
-            model.stop(message: "Camera interrupted. Tap Start camera when it is available again.")
+            model.stop(message: "相机已中断。恢复可用后，轻点“启动相机”。")
         }
         .onReceive(NotificationCenter.default.publisher(
             for: AVCaptureSession.runtimeErrorNotification,
             object: model.engine.session
         ).receive(on: DispatchQueue.main)) { _ in
-            model.stop(message: "The camera session stopped unexpectedly. Try starting it again.")
+            model.stop(message: "相机会话意外停止，请尝试重新启动。")
         }
     }
 }
@@ -55,9 +55,9 @@ private struct CameraDemoScreen<AccessoryControls: View>: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 20) {
-                Text("Live camera and speaker prompt")
+                Text("实时相机与演讲提示")
                     .font(.title2.bold())
-                Text("Start the rear camera to preview framing. The speaker can read the same prompt on an eligible accessory display.")
+                Text("启动后置相机以预览取景。演讲者可在符合条件的附属显示屏上阅读相同提示。")
                     .foregroundStyle(.secondary)
 
                 ZStack {
@@ -65,9 +65,9 @@ private struct CameraDemoScreen<AccessoryControls: View>: View {
                     if !model.isRunning {
                         Rectangle().fill(.black)
                         ContentUnavailableView(
-                            "Camera is off",
+                            "相机已关闭",
                             systemImage: "camera",
-                            description: Text("Tap Start camera to request access and show a live preview.")
+                            description: Text("轻点“启动相机”以请求访问权限并显示实时预览。")
                         )
                         .foregroundStyle(.white)
                     }
@@ -76,7 +76,7 @@ private struct CameraDemoScreen<AccessoryControls: View>: View {
                 .frame(maxWidth: 500)
                 .clipShape(RoundedRectangle(cornerRadius: 20))
                 .frame(maxWidth: .infinity)
-                .accessibilityLabel(model.isRunning ? "Live rear camera preview" : "Camera preview is off")
+                .accessibilityLabel(model.isRunning ? "后置相机实时预览" : "相机预览已关闭")
                 .accessibilityIdentifier("apiLab.cameraPreview")
 
                 Text(model.status)
@@ -87,7 +87,7 @@ private struct CameraDemoScreen<AccessoryControls: View>: View {
                     Button {
                         model.stop()
                     } label: {
-                        Label(model.isStarting ? "Cancel camera start" : "Stop camera", systemImage: "stop.circle")
+                        Label(model.isStarting ? "取消启动相机" : "停止相机", systemImage: "stop.circle")
                     }
                     .buttonStyle(.borderedProminent)
                     .accessibilityIdentifier("apiLab.cameraStop")
@@ -95,7 +95,7 @@ private struct CameraDemoScreen<AccessoryControls: View>: View {
                     Button {
                         Task { await model.start() }
                     } label: {
-                        Label("Start camera", systemImage: "camera")
+                        Label("启动相机", systemImage: "camera")
                     }
                     .buttonStyle(.borderedProminent)
                     .accessibilityIdentifier("apiLab.cameraStart")
@@ -103,20 +103,20 @@ private struct CameraDemoScreen<AccessoryControls: View>: View {
 
                 if model.canOpenSettings,
                    let settingsURL = URL(string: UIApplication.openSettingsURLString) {
-                    Button("Open camera permission settings") { openURL(settingsURL) }
+                    Button("打开相机权限设置") { openURL(settingsURL) }
                 }
 
                 Divider()
                 CameraPromptCard(model: model)
                 Divider()
                 VStack(alignment: .leading, spacing: 12) {
-                    Text("Optional camera accessory").font(.headline)
+                    Text("可选的相机附属显示").font(.headline)
                     accessoryControls()
-                    Text("The system decides whether and where this content appears. An active camera and a foreground app are required. The main screen keeps all controls when no accessory is available.")
+                    Text("系统决定是否显示此内容及其显示位置。相机必须运行且应用必须位于前台。没有可用的附属显示屏时，主屏幕会保留全部控件。")
                         .font(.footnote)
                         .foregroundStyle(.secondary)
                 }
-                Text("Preview only. Nothing is photographed, recorded, or saved. Leaving this screen or moving the app to the background stops the camera.")
+                Text("仅供预览，不会拍照、录制或保存内容。离开此页面或将应用切至后台会停止相机。")
                     .font(.footnote)
                     .foregroundStyle(.secondary)
             }
@@ -132,13 +132,13 @@ private struct CameraPromptCard: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
-            Label("Speaker prompt", systemImage: "text.bubble")
+            Label("演讲提示", systemImage: "text.bubble")
                 .font(.headline)
             Text(model.currentPrompt)
                 .font(.title2)
                 .fixedSize(horizontal: false, vertical: true)
                 .accessibilityIdentifier("apiLab.cameraPrompt")
-            Button("Next prompt", systemImage: "arrow.right") {
+            Button("下一条提示", systemImage: "arrow.right") {
                 model.nextPrompt()
             }
             .buttonStyle(.bordered)
@@ -156,13 +156,13 @@ private struct NativeCameraDemo: View {
 
     var body: some View {
         CameraDemoScreen(model: model) {
-            Toggle("Show speaker prompt on accessory display", isOn: $accessoryEnabled)
+            Toggle("在附属显示屏上显示演讲提示", isOn: $accessoryEnabled)
                 .disabled(!model.isRunning || !accessoryAvailable)
                 .accessibilityIdentifier("apiLab.cameraAccessoryToggle")
-            LabeledContent("System availability", value: accessoryAvailable ? "Available" : "Unavailable")
-            LabeledContent("Accessory content", value: accessoryPresented ? "Presented" : "Not presented")
+            LabeledContent("系统可用性", value: accessoryAvailable ? "可用" : "不可用")
+            LabeledContent("附属显示内容", value: accessoryPresented ? "已显示" : "未显示")
             if !model.isRunning {
-                Text("Start the camera before enabling the accessory.")
+                Text("请先启动相机，再启用附属显示功能。")
                     .font(.footnote)
             }
         }
@@ -193,15 +193,15 @@ private final class CameraDemoModel: ObservableObject {
     @Published private(set) var isStarting = false
     @Published private(set) var isRunning = false
     @Published private(set) var canOpenSettings = false
-    @Published private(set) var status = "Ready. Camera access is requested only after you tap Start camera."
+    @Published private(set) var status = "已就绪。仅在轻点“启动相机”后请求相机访问权限。"
     @Published private(set) var promptIndex = 0
 
     let engine = CameraDemoEngine()
     private var requestGeneration = 0
     private let prompts = [
-        "One app can adapt to changing display sizes while preserving its content and state.",
-        "Use local geometry and native navigation instead of assuming one fixed screen size.",
-        "Keep interactive controls inside the safe area and make every feature reachable."
+        "应用可以适应不断变化的显示尺寸，同时保留内容和状态。",
+        "使用局部几何信息和原生导航，避免假定屏幕尺寸固定不变。",
+        "将可交互控件保持在安全区域内，确保每项功能均可访问。"
     ]
 
     var currentPrompt: String { prompts[promptIndex] }
@@ -213,7 +213,7 @@ private final class CameraDemoModel: ObservableObject {
     func start() async {
         guard !isStarting, !isRunning else { return }
         guard AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .back) != nil else {
-            status = "No rear camera is available. Use a physical device to run this preview; simulator capture is not simulated."
+            status = "没有可用的后置相机。请使用真机运行此预览；模拟器中不会模拟相机采集。"
             return
         }
 
@@ -221,7 +221,7 @@ private final class CameraDemoModel: ObservableObject {
         let generation = requestGeneration
         isStarting = true
         canOpenSettings = false
-        status = "Checking camera permission…"
+        status = "正在检查相机权限…"
 
         let allowed: Bool
         switch AVCaptureDevice.authorizationStatus(for: .video) {
@@ -232,19 +232,19 @@ private final class CameraDemoModel: ObservableObject {
         default:
             allowed = false
         }
-        // A permission dialog can outlive this screen. Never start after dismissal.
+        // 权限弹窗可能在此界面关闭后仍然存在；界面关闭后不得启动相机会话。
         guard generation == requestGeneration else { return }
         guard allowed else {
             isStarting = false
             let authorization = AVCaptureDevice.authorizationStatus(for: .video)
             canOpenSettings = authorization == .denied
             status = authorization == .restricted
-                ? "Camera access is restricted on this device."
-                : "Camera access is unavailable. Allow camera access in Settings to use the preview."
+                ? "此设备限制了相机访问。"
+                : "无法访问相机。请在设置中允许相机访问，以使用预览。"
             return
         }
 
-        status = "Starting the rear camera…"
+        status = "正在启动后置相机…"
         engine.start { [weak self] result in
             Task { @MainActor [weak self] in
                 guard let self, self.requestGeneration == generation else { return }
@@ -252,7 +252,7 @@ private final class CameraDemoModel: ObservableObject {
                 switch result {
                 case .success:
                     self.isRunning = true
-                    self.status = "Live rear-camera preview. No photo or recording is being saved."
+                    self.status = "后置相机实时预览，不会保存照片或录制内容。"
                 case .failure(let error):
                     self.isRunning = false
                     self.status = error.message
@@ -261,7 +261,7 @@ private final class CameraDemoModel: ObservableObject {
         }
     }
 
-    func stop(message: String = "Camera stopped. Tap Start camera to resume.") {
+    func stop(message: String = "相机已停止。轻点“启动相机”以恢复预览。") {
         requestGeneration += 1
         isStarting = false
         isRunning = false
@@ -279,20 +279,20 @@ private enum CameraDemoError: Error, Sendable {
     var message: String {
         switch self {
         case .noRearCamera:
-            return "No rear camera is available on this device."
+            return "此设备没有可用的后置相机。"
         case .cannotAddInput:
-            return "The camera input is unavailable. Close other camera experiences and try again."
+            return "相机输入不可用。请关闭其他使用相机的功能后重试。"
         case .configuration(let detail):
-            return "Unable to configure the camera: \(detail)"
+            return "无法配置相机：\(detail)"
         case .didNotStart:
-            return "The camera could not start. Try again when capture is available."
+            return "无法启动相机。请在相机采集可用时重试。"
         }
     }
 }
 
-/// AVCaptureSession is not Sendable. This wrapper is the sole mutator: every
-/// configuration/start/stop operation is serialized on `queue`. The main actor
-/// only attaches the stable session reference to AVCaptureVideoPreviewLayer.
+/// AVCaptureSession 不遵循 Sendable。仅此封装可修改会话状态：
+/// 所有配置、启动和停止操作均在 `queue` 上串行执行。
+/// MainActor 仅将稳定的会话引用关联到 AVCaptureVideoPreviewLayer。
 private final class CameraDemoEngine: @unchecked Sendable {
     let session = AVCaptureSession()
     private let queue = DispatchQueue(label: "com.example.AdaptiveDuoLab.camera")

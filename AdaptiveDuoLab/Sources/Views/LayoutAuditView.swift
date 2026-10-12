@@ -18,7 +18,7 @@ struct LayoutAuditView: View {
             )
             .toolbar {
                 ToolbarItem(placement: .confirmationAction) {
-                    Button("Done") { dismiss() }
+                    Button("完成") { dismiss() }
                         .accessibilityIdentifier("audit.done")
                 }
             }
@@ -27,7 +27,7 @@ struct LayoutAuditView: View {
     }
 }
 
-/// The same configuration guidance is available as a tab and a modal sheet.
+/// 同一份配置指导可通过标签页或模态 sheet 呈现。
 struct LayoutAuditContent: View {
     let itemCount: Int
     let pose: DemoPose
@@ -36,19 +36,19 @@ struct LayoutAuditContent: View {
 
     private var recommendations: [String] {
         var values = [
-            "Use local geometry and size classes instead of checking device type or orientation.",
-            "Keep interactive foreground controls inside the safe area.",
-            "Allow decorative backgrounds to extend behind system bars."
+            "使用局部几何信息和 Size Class，避免根据设备类型或方向判断布局。",
+            "将可交互的前景控件保持在安全区域内。",
+            "允许装饰性背景延伸到系统栏后方。"
         ]
 
         if pose == .bookFold {
-            values.append("Keep every card inside one region and away from the fold.")
+            values.append("将每张卡片完整放在一个区域内，并避开折叠处。")
         } else if pose == .tabletop {
-            values.append("Place glanceable content above the fold and frequent controls below it.")
+            values.append("将便于浏览的内容放在折叠处上方，常用控件放在下方。")
         } else if presentation == .list {
-            values.append("Keep continuous lists continuous rather than displacing individual rows.")
+            values.append("保持列表连续，避免单独移动某些行。")
         } else {
-            values.append("Confirm every grid item remains readable and interactive at the current width.")
+            values.append("确认当前宽度下的每个网格项都清晰可读且可交互。")
         }
 
         return values
@@ -56,26 +56,26 @@ struct LayoutAuditContent: View {
 
     var body: some View {
         List {
-            Section("Current configuration") {
-                configurationRow("Category", value: category.rawValue, id: "review.category")
-                configurationRow("Pose", value: pose.rawValue, id: "review.pose")
-                configurationRow("Content mode", value: presentation.rawValue, id: "review.presentation")
-                configurationRow("Records", value: itemCount.formatted(), id: "review.recordCount")
+            Section("当前配置") {
+                configurationRow("分类", value: category.title, id: "review.category")
+                configurationRow("姿态", value: pose.title, id: "review.pose")
+                configurationRow("内容模式", value: presentation.title, id: "review.presentation")
+                configurationRow("记录", value: itemCount.formatted(), id: "review.recordCount")
             }
 
-            Section("Layout checks") {
+            Section("布局检查项") {
                 ForEach(recommendations, id: \.self) {
                     Label($0, systemImage: "checkmark.seal")
                 }
             }
 
             Section {
-                Text("These checks follow the selected configuration. Use the API Lab to inspect actual system geometry, then verify the layout while resizing.")
+                Text("这些检查项基于所选配置。使用 API 实验室查看实际系统几何信息，再调整窗口大小以验证布局。")
                     .font(.footnote)
                     .foregroundStyle(.secondary)
             }
         }
-        .navigationTitle("Layout Review")
+        .navigationTitle("布局检查")
     }
 
     private func configurationRow(_ title: String, value: String, id: String) -> some View {

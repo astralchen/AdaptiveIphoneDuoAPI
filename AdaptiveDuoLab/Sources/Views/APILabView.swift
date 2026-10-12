@@ -1,6 +1,6 @@
 import SwiftUI
 
-/// Presented independently of Workspace's NavigationSplitView.
+/// 独立于工作区的 NavigationSplitView 呈现。
 struct APILabView: View {
 	let items: [WorkItem]
 	let category: WorkCategory
@@ -29,27 +29,27 @@ struct APILabView: View {
 						)
 					}
 				} header: {
-					Text("Interactive examples")
+					Text("交互示例")
 				} footer: {
 					Text(
-						"System layout uses your selected category's records. " +
-						"Other examples keep their own editable demo state. " +
-						"The system determines supported placements and hardware capabilities."
+						"系统布局使用所选分类中的记录。" +
+						"其他示例各自保留可编辑的演示状态。" +
+						"系统决定支持的呈现位置和硬件能力。"
 					)
 				}
 
 				Section {
 					Text(
-						"Native navigation and bars adapt their own presentation. " +
-						"Your app supplies content relationships, fallback layouts and state."
+						"原生导航和系统栏会自动调整呈现方式。" +
+						"应用负责提供内容关系、回退布局和状态。"
 					)
 
 					Text(
-						"Apple's App Resizability skill assists source changes in Xcode; " +
-						"it is not a runtime layout API."
+						"Apple 的 App Resizability skill 可在 Xcode 中辅助修改源代码；" +
+						"它不属于运行时布局 API。"
 					)
 				} header: {
-					Text("Automatic adaptation")
+					Text("自动适配")
 				}
 
 				Section {
@@ -82,13 +82,13 @@ struct APILabView: View {
 						)
 					}
 				} header: {
-					Text("API inventory")
+					Text("API 清单")
 				}
 			}
-			.navigationTitle("API Lab")
+			.navigationTitle("API 实验室")
 			.toolbar {
 				ToolbarItem(placement: .confirmationAction) {
-					Button("Done") {
+					Button("完成") {
 						dismiss()
 					}
 					.accessibilityIdentifier("apiLab.done")
@@ -117,7 +117,7 @@ private struct APICatalogDetail: View {
 						)
 					} label: {
 						Label(
-							"Try this API",
+							"体验此 API",
 							systemImage: "play.circle"
 						)
 					}
@@ -127,13 +127,13 @@ private struct APICatalogDetail: View {
 			Section {
 				Text(entry.version)
 			} header: {
-				Text("Availability")
+				Text("可用条件")
 			}
 
 			Section {
 				Text(entry.purpose)
 			} header: {
-				Text("What it does")
+				Text("作用")
 			}
 
 			Section {
@@ -143,26 +143,26 @@ private struct APICatalogDetail: View {
 					.font(.footnote)
 					.foregroundStyle(.secondary)
 			} header: {
-				Text("In this project")
+				Text("本项目中的实现")
 			}
 
 			Section {
 				Text(entry.ordinaryPhone)
 			} header: {
-				Text("Other supported iPhones")
+				Text("其他受支持的 iPhone")
 			}
 
 			Section {
 				if let url = entry.documentationURL {
 					Link(
-						"Apple documentation",
+						"Apple 文档",
 						destination: url
 					)
 				}
 			} footer: {
 				Text(
-					"Some examples require the native build and a supported OS. " +
-					"Hardware features remain optional."
+					"部分示例需要启用原生 API 的构建版本及受支持的系统。" +
+					"硬件功能仍为可选能力。"
 				)
 			}
 		}

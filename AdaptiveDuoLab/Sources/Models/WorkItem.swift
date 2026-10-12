@@ -2,6 +2,16 @@ import Foundation
 import SwiftData
 
 enum WorkCategory: String, CaseIterable, Codable, Identifiable {
+    /// 界面显示名称；rawValue 保持稳定以兼容存储和启动参数。
+    var title: String {
+        switch self {
+        case .all: "全部"
+        case .design: "设计"
+        case .engineering: "工程"
+        case .research: "研究"
+        }
+    }
+
     case all = "All"
     case design = "Design"
     case engineering = "Engineering"
@@ -20,6 +30,15 @@ enum WorkCategory: String, CaseIterable, Codable, Identifiable {
 }
 
 enum WorkStatus: String, Codable {
+    /// 界面显示名称；rawValue 保持稳定以兼容存储和启动参数。
+    var title: String {
+        switch self {
+        case .planned: "待开始"
+        case .inProgress: "进行中"
+        case .complete: "已完成"
+        }
+    }
+
     case planned = "Planned"
     case inProgress = "In progress"
     case complete = "Complete"

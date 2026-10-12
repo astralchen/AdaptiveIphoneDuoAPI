@@ -1,3 +1,4 @@
+import SwiftData
 import SwiftUI
 import Testing
 @testable import AdaptiveDuoLab
@@ -61,7 +62,7 @@ struct AdaptiveLayoutPolicyTests {
 
     @Test
     func bookFoldRequiresEnoughWidthForBothCards() {
-        // 48 outer padding + 26 fold + 56 region padding + 2 * 280 card width.
+        // 48 pt 外边距 + 26 pt 折叠区域 + 56 pt 区域内边距 + 2 × 280 pt 卡片宽度。
         for (width, expectedComposition) in [
             (CGFloat(689), AdaptiveComposition.single),
             (CGFloat(690), AdaptiveComposition.book)
@@ -99,7 +100,7 @@ struct AdaptiveLayoutPolicyTests {
                 )
                 #expect(decision.composition == .single)
                 #expect(decision.columnCount == 1)
-                // Grid stays the selected rendering style, with readable density.
+                // 保留所选的网格呈现样式，同时确保内容密度满足可读性要求。
                 #expect(decision.usesGrid == (presentation == .grid))
             }
         }
@@ -138,5 +139,49 @@ struct AdaptiveLayoutPolicyTests {
             #expect(decision.composition == expectedComposition)
             #expect(decision.columnCount == expectedColumns)
         }
+    }
+}
+
+/// 翻译已有示例时，验证持久化状态与用户编辑内容不会被重置。
+struct DemoSampleTranslationTests {
+    @Test @MainActor
+    func translatesLegacySamplesWithoutResettingState() throws {
+        let container = try ModelContainer(
+            for: WorkItem.self,
+            configurations: ModelConfiguration(isStoredInMemoryOnly: true)
+        )
+        let context = container.mainContext
+        let date = Date(timeIntervalSince1970: 1_000)
+        let sample = WorkItem(
+            title: "Adaptive navigation",
+            summary: "Move naturally between collapsed and multi-column navigation.",
+            category: .engineering, status: .inProgress,
+            progress: 0.42, updatedAt: date, symbolName: "sidebar.left"
+        )
+        let edited = WorkItem(
+            title: "Adaptive navigation", summary: "用户编辑的说明",
+            category: .design, status: .planned,
+            progress: 0.2, updatedAt: date, symbolName: "paintpalette"
+        )
+        let id = sample.id
+        context.insert(sample)
+        context.insert(edited)
+        try context.save()
+
+        try DemoSeeder.seedIfNeeded(in: context, reset: false)
+        try DemoSeeder.seedIfNeeded(in: context, reset: false)
+
+        #expect(try context.fetchCount(FetchDescriptor<WorkItem>()) == 2)
+        #expect(sample.title == "自适应导航")
+        #expect(sample.summary == "在折叠导航与多栏导航之间自然切换。")
+        #expect(sample.id == id)
+        #expect(sample.progress == 0.42)
+        #expect(sample.updatedAt == date)
+        #expect(sample.categoryRawValue == "Engineering")
+        #expect(sample.statusRawValue == "In progress")
+        #expect(sample.category == .engineering)
+        #expect(sample.status == .inProgress)
+        #expect(edited.title == "Adaptive navigation")
+        #expect(edited.summary == "用户编辑的说明")
     }
 }

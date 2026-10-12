@@ -10,14 +10,14 @@ enum AdaptiveLayoutPolicy {
     ) -> LayoutDecision {
         let contentPadding: CGFloat = width < 500 ? 16 : 24
         let needsReadableColumn = dynamicTypeSize.isAccessibilitySize
-        // The simulated book has a 26-point divider and 14-point padding on
-        // each side of each region. Measure the room left for the actual card.
-        // This is a sample content-fit rule, not a device or display breakpoint.
+        // 模拟书本布局的分隔区域宽 26 pt，每个区域的左右内边距各为 14 pt。
+        // 据此计算卡片实际可用的宽度。
+        // 这是示例内容的适配规则，并非设备或显示屏的布局断点。
         let bookCardWidth = (width - contentPadding * 2 - 26) / 2 - 28
         let hasRoomForBook = bookCardWidth >= 280 && !needsReadableColumn
-        // This is a demo content budget, not a hardware or orientation check.
-        // Preserve the selected pose while rendering a continuous collection
-        // when the tabletop placeholder would compete with readable records.
+        // 此处按演示内容所需空间判断，不检测硬件或屏幕方向。
+        // 当桌面姿态的占位区域挤占记录的可读空间时，保留所选姿态，
+        // 同时将集合呈现为连续布局。
         let hasRoomForTabletop = height >= 520 && !needsReadableColumn
         let composition: AdaptiveComposition = switch pose {
         case .bookFold: hasRoomForBook ? .book : .single

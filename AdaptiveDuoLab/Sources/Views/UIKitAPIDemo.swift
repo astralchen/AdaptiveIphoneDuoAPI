@@ -4,7 +4,7 @@ import UIKit
 struct UIKitAPIDemo: View {
     var body: some View {
         UIKitLayoutControllerHost()
-            .navigationTitle("UIKit layout")
+            .navigationTitle("UIKit 布局")
             .navigationBarTitleDisplayMode(.inline)
             .accessibilityIdentifier("apiLab.uikit.screen")
     }
@@ -18,8 +18,8 @@ private struct UIKitLayoutControllerHost: UIViewControllerRepresentable {
     func updateUIViewController(_ uiViewController: UIKitLayoutController, context: Context) {}
 }
 
-/// The background fills bounds; all interactive content uses this view's
-/// safe-area guide. No global screen reference or mirrored inset is needed.
+/// 背景填满视图边界；所有交互内容均使用当前视图的 safe area 布局指南。
+/// 无需引用全局屏幕，也无需复制其他视图的边距。
 private final class UIKitLayoutController: UIViewController {
     var showsNavigationDemoButton = true
     private let geometryLabel = UIKitLayoutController.makeLabel(style: .footnote)
@@ -36,7 +36,7 @@ private final class UIKitLayoutController: UIViewController {
 
         let scrollView = UIScrollView()
         scrollView.translatesAutoresizingMaskIntoConstraints = false
-        // Safe-area constraints already provide the insets; don't apply them twice.
+        // safe area 约束已提供所需边距，避免重复应用。
         scrollView.contentInsetAdjustmentBehavior = .never
         view.addSubview(scrollView)
         let safeArea = view.safeAreaLayoutGuide
@@ -62,11 +62,11 @@ private final class UIKitLayoutController: UIViewController {
             stack.widthAnchor.constraint(equalTo: scrollView.frameLayoutGuide.widthAnchor)
         ])
 
-        stack.addArrangedSubview(Self.makeLabel("Independent safe-area edges", style: .title2))
-        stack.addArrangedSubview(Self.makeLabel("Apply an extra test inset to either side. Auto Layout follows each edge independently while the background still fills the view."))
-        let edgeControl = UISegmentedControl(items: ["None", "Left +44", "Right +44"])
+        stack.addArrangedSubview(Self.makeLabel("独立的安全区域边缘", style: .title2))
+        stack.addArrangedSubview(Self.makeLabel("为任意一侧添加额外的测试边距。Auto Layout 会独立跟随各侧边缘，背景仍填满视图。"))
+        let edgeControl = UISegmentedControl(items: ["无", "左侧 +44", "右侧 +44"])
         edgeControl.selectedSegmentIndex = 0
-        edgeControl.accessibilityLabel = "Additional safe-area inset"
+        edgeControl.accessibilityLabel = "额外安全区域边距"
         edgeControl.accessibilityIdentifier = "apiLab.uikit.safeAreaControl"
         edgeControl.addTarget(self, action: #selector(changeSafeArea(_:)), for: .valueChanged)
         stack.addArrangedSubview(edgeControl)
@@ -74,13 +74,13 @@ private final class UIKitLayoutController: UIViewController {
         geometryLabel.accessibilityIdentifier = "apiLab.uikit.geometry"
         stack.addArrangedSubview(geometryLabel)
 
-        stack.addArrangedSubview(Self.makeLabel("Concentric UIKit corners", style: .title2))
-        let switchLabel = Self.makeLabel("Use concentric corners")
+        stack.addArrangedSubview(Self.makeLabel("UIKit 同心圆角", style: .title2))
+        let switchLabel = Self.makeLabel("使用同心圆角")
         let switchRow = UIStackView(arrangedSubviews: [switchLabel, concentricSwitch])
         switchRow.spacing = 12
         switchRow.alignment = .center
         concentricSwitch.isOn = true
-        concentricSwitch.accessibilityLabel = "Use concentric corners"
+        concentricSwitch.accessibilityLabel = "使用同心圆角"
         concentricSwitch.accessibilityIdentifier = "apiLab.uikit.concentric"
         concentricSwitch.setContentHuggingPriority(.required, for: .horizontal)
         concentricSwitch.addTarget(self, action: #selector(changeCorners), for: .valueChanged)
@@ -89,7 +89,7 @@ private final class UIKitLayoutController: UIViewController {
         insetSlider.minimumValue = 8
         insetSlider.maximumValue = 32
         insetSlider.value = 12
-        insetSlider.accessibilityLabel = "UIKit card inset"
+        insetSlider.accessibilityLabel = "UIKit 卡片内边距"
         insetSlider.accessibilityIdentifier = "apiLab.uikit.inset"
         insetSlider.addTarget(self, action: #selector(changeInset), for: .valueChanged)
         stack.addArrangedSubview(insetLabel)
@@ -98,21 +98,21 @@ private final class UIKitLayoutController: UIViewController {
         stack.addArrangedSubview(outerCard)
 
         if #available(iOS 26.0, *) {
-            stack.addArrangedSubview(Self.makeLabel("UICornerConfiguration resolves the inner corners against their containing view. Drag the inset slider or compare fixed corners.", style: .footnote))
+            stack.addArrangedSubview(Self.makeLabel("UICornerConfiguration 根据所在容器视图计算内侧圆角。拖动内边距滑块，或与固定圆角比较。", style: .footnote))
         } else {
             concentricSwitch.isEnabled = false
             concentricSwitch.isOn = false
-            stack.addArrangedSubview(Self.makeLabel("Concentric corners require iOS 26. This device uses fixed rounded corners; safe areas and split navigation still work.", style: .footnote))
+            stack.addArrangedSubview(Self.makeLabel("同心圆角需要 iOS 26。此设备使用固定圆角；安全区域和分栏导航仍可使用。", style: .footnote))
         }
 
         if showsNavigationDemoButton {
             var buttonConfiguration = UIButton.Configuration.filled()
-            buttonConfiguration.title = "Open UIKit tabs and split navigation"
+            buttonConfiguration.title = "打开 UIKit 标签页与分栏导航"
             let splitButton = UIButton(configuration: buttonConfiguration)
             splitButton.accessibilityIdentifier = "apiLab.uikit.openSplit"
             splitButton.addTarget(self, action: #selector(openSplitNavigation), for: .touchUpInside)
             stack.addArrangedSubview(splitButton)
-            stack.addArrangedSubview(Self.makeLabel("Switch tabs, select a topic and edit its draft, then change the window width. The system chooses the navigation presentation.", style: .footnote))
+            stack.addArrangedSubview(Self.makeLabel("切换标签页，选择主题并编辑草稿，然后更改窗口宽度。导航呈现方式由系统决定。", style: .footnote))
         }
         changeInset()
         changeCorners()
@@ -141,7 +141,7 @@ private final class UIKitLayoutController: UIViewController {
         ]
         NSLayoutConstraint.activate(innerConstraints)
 
-        let text = Self.makeLabel("Adaptive card\nChange the inset to compare the inner and outer curves.")
+        let text = Self.makeLabel("自适应卡片\n调整内边距，比较内外圆角曲线。")
         text.translatesAutoresizingMaskIntoConstraints = false
         innerCard.addSubview(text)
         NSLayoutConstraint.activate([
@@ -164,8 +164,8 @@ private final class UIKitLayoutController: UIViewController {
     @objc private func changeInset() {
         let inset = CGFloat(insetSlider.value.rounded())
         innerConstraints.forEach { $0.constant = inset }
-        insetLabel.text = "Card inset: \(Int(inset)) pt"
-        insetSlider.accessibilityValue = "\(Int(inset)) points"
+        insetLabel.text = "卡片内边距：\(Int(inset)) pt"
+        insetSlider.accessibilityValue = "\(Int(inset)) 点"
     }
 
     @objc private func changeCorners() {
@@ -183,7 +183,7 @@ private final class UIKitLayoutController: UIViewController {
     private func updateGeometryLabel() {
         let insets = view.safeAreaInsets
         let text = String(
-            format: "Local view: %.0f × %.0f pt · scale %.1f×\nSafe area: top %.0f · left %.0f · bottom %.0f · right %.0f",
+            format: "局部视图：%.0f × %.0f pt · 缩放比例 %.1f×\n安全区域：上 %.0f · 左 %.0f · 下 %.0f · 右 %.0f",
             view.bounds.width, view.bounds.height,
             view.traitCollection.displayScale,
             insets.top, insets.left, insets.bottom, insets.right
@@ -212,7 +212,7 @@ private final class UIKitNavigationDemoController: UITabBarController {
         super.viewDidLoad()
         let layout = UIKitLayoutController()
         layout.showsNavigationDemoButton = false
-        layout.title = "Layout"
+        layout.title = "布局"
         layout.navigationItem.rightBarButtonItem = UIBarButtonItem(
             barButtonSystemItem: .done, target: self, action: #selector(closeDemo)
         )
@@ -222,24 +222,24 @@ private final class UIKitNavigationDemoController: UITabBarController {
 
         if #available(iOS 18.0, *) {
             tabs = [
-                UITab(title: "Layout", image: UIImage(systemName: "rectangle.inset.filled"), identifier: "layout") { _ in
+                UITab(title: "布局", image: UIImage(systemName: "rectangle.inset.filled"), identifier: "layout") { _ in
                     layoutNavigation
                 },
-                UITab(title: "Topics", image: UIImage(systemName: "rectangle.split.2x1"), identifier: "topics") { _ in
+                UITab(title: "主题", image: UIImage(systemName: "rectangle.split.2x1"), identifier: "topics") { _ in
                     split
                 }
             ]
             mode = .tabSidebar
             #if DUO_SDK
             if #available(iOS 27.1, *) {
-                // Sidebar preference is iOS 27 API, compiled only with the
-                // optional 27.1 SDK profile used by the rest of the Duo lab.
+                // 侧边栏偏好设置属于 iOS 27 API，仅在启用 Duo 实验室
+                // 其余示例共用的可选 27.1 SDK 配置时编译。
                 sidebar.preferredPlacement = .sidebar
             }
             #endif
         } else {
-            layoutNavigation.tabBarItem = UITabBarItem(title: "Layout", image: UIImage(systemName: "rectangle.inset.filled"), tag: 0)
-            split.tabBarItem = UITabBarItem(title: "Topics", image: UIImage(systemName: "rectangle.split.2x1"), tag: 1)
+            layoutNavigation.tabBarItem = UITabBarItem(title: "布局", image: UIImage(systemName: "rectangle.inset.filled"), tag: 0)
+            split.tabBarItem = UITabBarItem(title: "主题", image: UIImage(systemName: "rectangle.split.2x1"), tag: 1)
             viewControllers = [layoutNavigation, split]
         }
         view.accessibilityIdentifier = "apiLab.uikit.tabs"
@@ -250,7 +250,7 @@ private final class UIKitNavigationDemoController: UITabBarController {
     }
 }
 
-/// Hosted directly as tab content, never pushed into a navigation stack.
+/// 直接作为标签页内容承载，不压入导航栈。
 private final class UIKitSplitDemoController: UISplitViewController {
     var onClose: (() -> Void)?
     private let list = UIKitTopicListController(style: .insetGrouped)
@@ -280,11 +280,11 @@ private final class UIKitSplitDemoController: UISplitViewController {
 
 private final class UIKitTopicListController: UITableViewController {
     var onSelect: ((String) -> Void)?
-    private let topics = ["Navigation", "Safe areas", "Concentric corners"]
+    private let topics = ["导航", "安全区域", "同心圆角"]
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = "Topics"
+        title = "主题"
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "topic")
         tableView.accessibilityIdentifier = "apiLab.uikit.topics"
     }
@@ -308,7 +308,7 @@ private final class UIKitTopicListController: UITableViewController {
 }
 
 private final class UIKitTopicDetailController: UIViewController, UITextViewDelegate {
-    private var topic = "Navigation"
+    private var topic = "导航"
     private var drafts: [String: String] = [:]
     private let textView = UITextView()
 
@@ -320,13 +320,13 @@ private final class UIKitTopicDetailController: UIViewController, UITextViewDele
         textView.font = .preferredFont(forTextStyle: .body)
         textView.adjustsFontForContentSizeCategory = true
         textView.delegate = self
-        textView.text = drafts[topic] ?? "Draft notes for \(topic). Edit this text, then resize the window."
-        textView.accessibilityLabel = "Topic notes"
+        textView.text = drafts[topic] ?? "\(topic)的笔记草稿。编辑此文本，然后调整窗口大小。"
+        textView.accessibilityLabel = "主题笔记"
         textView.accessibilityIdentifier = "apiLab.uikit.draft"
         textView.contentInsetAdjustmentBehavior = .never
         view.addSubview(textView)
-        // Both horizontal edges are local and independent. The keyboard guide
-        // keeps the editor usable while typing on compact windows.
+        // 左右边缘分别约束到当前容器，彼此独立。
+        // 键盘布局指南确保在紧凑窗口中输入时，编辑器仍然可用。
         NSLayoutConstraint.activate([
             textView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 12),
             textView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
@@ -340,7 +340,7 @@ private final class UIKitTopicDetailController: UIViewController, UITextViewDele
         topic = newTopic
         title = newTopic
         if isViewLoaded {
-            textView.text = drafts[newTopic] ?? "Draft notes for \(newTopic). Edit this text, then resize the window."
+            textView.text = drafts[newTopic] ?? "\(newTopic)的笔记草稿。编辑此文本，然后调整窗口大小。"
         }
     }
 

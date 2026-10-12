@@ -1,0 +1,4 @@
+# 本机 Xcode 用户状态与 Finder 元数据。
+xcuserdata/
+*.xcuserstate
+.DS_Store

@@ -17,7 +17,7 @@ struct WorkItemCard: View {
 
                 Spacer()
 
-                Label(item.status.rawValue, systemImage: item.status.symbol)
+                Label(item.status.title, systemImage: item.status.symbol)
                     .font(.caption.bold())
                     .foregroundStyle(statusColor)
                     .fixedSize(horizontal: false, vertical: true)
@@ -34,7 +34,7 @@ struct WorkItemCard: View {
 
             ProgressView(value: item.progress)
                 .tint(statusColor)
-                .accessibilityLabel("Progress")
+                .accessibilityLabel("进度")
 
             ViewThatFits(in: .horizontal) {
                 HStack(spacing: 12) {
@@ -60,7 +60,7 @@ struct WorkItemCard: View {
     }
 
     private var categoryLabel: some View {
-        Label(item.category.rawValue, systemImage: item.category.symbol)
+        Label(item.category.title, systemImage: item.category.symbol)
             .fixedSize(horizontal: false, vertical: true)
     }
 

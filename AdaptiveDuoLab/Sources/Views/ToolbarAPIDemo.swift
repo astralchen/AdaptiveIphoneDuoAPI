@@ -1,9 +1,9 @@
 import Observation
 import SwiftUI
 
-/// A real system-toolbar experiment in the existing demo app.
-/// Preferences are chosen before presenting a session, so vertical-bar behavior
-/// remains stable while navigating, scrolling, and resizing that session.
+/// 在现有演示应用中使用真实的系统工具栏进行实验。
+/// 在呈现会话前确定偏好设置，使垂直工具栏的行为在会话期间的导航、
+/// 滚动和窗口尺寸调整过程中保持稳定。
 @MainActor
 struct ToolbarAPIDemo: View {
     @State private var configuration = ToolbarDemoConfiguration()
@@ -13,12 +13,12 @@ struct ToolbarAPIDemo: View {
     var body: some View {
         List {
             Section {
-                Text("Compare system tabs, toolbar actions and overflow as available space changes. Review, Pin and Add all update this session's local records.")
+                Text("调整可用空间，比较系统标签栏、工具栏操作和溢出菜单的变化。检查、置顶和添加操作都会更新当前会话的本地记录。")
             }
 
 			Section {
 				Picker(
-					"Bar placement",
+					"工具栏位置",
 					selection: $configuration.vertical
 				) {
 					ForEach(ToolbarVerticalChoice.allCases) {
@@ -28,7 +28,7 @@ struct ToolbarAPIDemo: View {
 				}
 
 				Picker(
-					"Compression priority",
+					"压缩优先级",
 					selection: $configuration.compression
 				) {
 					ForEach(ToolbarCompressionChoice.allCases) {
@@ -38,7 +38,7 @@ struct ToolbarAPIDemo: View {
 				}
 
 				Picker(
-					"Review control axis",
+					"检查控件的轴向",
 					selection: $configuration.axis
 				) {
 					ForEach(ToolbarAxisChoice.allCases) {
@@ -48,7 +48,7 @@ struct ToolbarAPIDemo: View {
 				}
 
 				Picker(
-					"Minimize navigation bar",
+					"导航栏最小化",
 					selection: $configuration.minimization
 				) {
 					ForEach(ToolbarMinimizationChoice.allCases) {
@@ -58,30 +58,30 @@ struct ToolbarAPIDemo: View {
 				}
 
 				Toggle(
-					"Give Review high visibility priority",
+					"优先显示检查操作",
 					isOn: $configuration.prioritizeReview
 				)
 			} header: {
-				Text("Choose the next session")
+				Text("配置下次会话")
 			} footer: {
 				Text(
-					"System geometry decides whether vertical bars exist. " +
-					"Horizontal-only Review stays reachable from the record list " +
-					"and Actions tab. Bar placement is a stable preference for each session."
+					"垂直工具栏是否可用由系统几何信息决定。" +
+					"仅限水平工具栏的检查操作仍可从记录列表" +
+					"和操作标签页访问。工具栏位置偏好在每次会话中保持不变。"
 				)
 			}
 
 
             availabilitySection
 
-            Section("Session state") {
+            Section("会话状态") {
                 ToolbarSessionSummary(session: session)
-                Text("Closing and reopening the preview keeps these values. Resizing never recreates the record model.")
+                Text("关闭并重新打开预览会保留这些值。调整窗口大小不会重建记录模型。")
                     .font(.footnote)
                     .foregroundStyle(.secondary)
             }
         }
-        .navigationTitle("Toolbar APIs")
+        .navigationTitle("工具栏 API")
         .navigationBarTitleDisplayMode(.inline)
         .accessibilityIdentifier("apiLab.toolbarScreen")
         .fullScreenCover(isPresented: $showingSession) {
@@ -102,15 +102,15 @@ struct ToolbarAPIDemo: View {
         Section {
             #if DUO_SDK
             if #available(iOS 27.1, *) {
-                Button("Open native toolbar session", systemImage: "play.rectangle") {
+                Button("打开原生工具栏会话", systemImage: "play.rectangle") {
                     showingSession = true
                 }
                 .accessibilityIdentifier("apiLab.toolbar.openNative")
             } else {
-                baselineLaunch("Native toolbar source is included; iOS 27.1 or later is required. The baseline preview uses ordinary system toolbar items.")
+                baselineLaunch("已包含原生工具栏源代码，需要 iOS 27.1 或更高版本。基础预览使用普通系统工具栏项。")
             }
             #else
-            baselineLaunch("Build with the iOS 27.1 SDK and DUO_SDK=1 to enable the native preferences above. The baseline preview uses ordinary system toolbar items.")
+            baselineLaunch("使用 iOS 27.1 SDK 并设置 DUO_SDK=1 构建，以启用上方的原生偏好设置。基础预览使用普通系统工具栏项。")
             #endif
         }
     }
@@ -118,7 +118,7 @@ struct ToolbarAPIDemo: View {
     @ViewBuilder
     private func baselineLaunch(_ message: String) -> some View {
         Text(message).font(.footnote).foregroundStyle(.secondary)
-        Button("Open baseline toolbar preview", systemImage: "play.rectangle") {
+        Button("打开基础工具栏预览", systemImage: "play.rectangle") {
             showingSession = true
         }
         .accessibilityIdentifier("apiLab.toolbar.openBaseline")
@@ -126,30 +126,30 @@ struct ToolbarAPIDemo: View {
 }
 
 private enum ToolbarVerticalChoice: String, CaseIterable, Identifiable {
-    case automatic = "System default"
-    case horizontal = "Horizontal bars"
+    case automatic = "系统默认"
+    case horizontal = "水平工具栏"
     var id: Self { self }
 }
 
 private enum ToolbarCompressionChoice: String, CaseIterable, Identifiable {
-    case automatic = "Automatic"
-    case tabs = "Prefer tabs"
-    case actions = "Prefer toolbar actions"
+    case automatic = "自动"
+    case tabs = "优先保留标签栏"
+    case actions = "优先保留工具栏操作"
     var id: Self { self }
 }
 
 private enum ToolbarAxisChoice: String, CaseIterable, Identifiable {
-    case automatic = "Automatic"
-    case horizontal = "Horizontal only"
-    case vertical = "Prefer vertical"
+    case automatic = "自动"
+    case horizontal = "仅限水平"
+    case vertical = "优先垂直"
     var id: Self { self }
 }
 
 private enum ToolbarMinimizationChoice: String, CaseIterable, Identifiable {
-    case automatic = "Automatic"
-    case never = "Never"
-    case down = "On scroll down"
-    case up = "On scroll up"
+    case automatic = "自动"
+    case never = "从不"
+    case down = "向下滚动时"
+    case up = "向上滚动时"
     var id: Self { self }
 }
 
@@ -169,7 +169,7 @@ private final class ToolbarDemoState {
     var isPinned = false
     var newestFirst = false
     var selectedTab = 0
-    var activity: [String] = ["Session ready"]
+    var activity: [String] = ["会话已就绪"]
 
     var records: [Int] {
         let values = Array(1...recordCount)
@@ -178,22 +178,22 @@ private final class ToolbarDemoState {
 
     func review() {
         reviewCount += 1
-        record("Reviewed the current records · \(reviewCount)")
+        record("已检查当前记录 · \(reviewCount) 次")
     }
 
     func togglePin() {
         isPinned.toggle()
-        record(isPinned ? "Pinned this collection" : "Unpinned this collection")
+        record(isPinned ? "已置顶此集合" : "已取消置顶此集合")
     }
 
     func toggleSort() {
         newestFirst.toggle()
-        record(newestFirst ? "Newest records first" : "Oldest records first")
+        record(newestFirst ? "最新记录优先" : "最早记录优先")
     }
 
     func addRecord() {
         recordCount += 1
-        record("Added demo record \(recordCount)")
+        record("已添加示例记录 \(recordCount)")
     }
 
     private func record(_ message: String) {
@@ -207,18 +207,18 @@ private struct ToolbarSessionSummary: View {
     let session: ToolbarDemoState
 
     var body: some View {
-        LabeledContent("Records", value: session.recordCount.formatted())
+        LabeledContent("记录", value: session.recordCount.formatted())
             .accessibilityElement(children: .ignore)
-            .accessibilityLabel("Records")
+            .accessibilityLabel("记录")
             .accessibilityValue(session.recordCount.formatted())
             .accessibilityIdentifier("apiLab.toolbar.recordCount")
-        LabeledContent("Review actions", value: session.reviewCount.formatted())
+        LabeledContent("检查次数", value: session.reviewCount.formatted())
             .accessibilityElement(children: .ignore)
-            .accessibilityLabel("Review actions")
+            .accessibilityLabel("检查次数")
             .accessibilityValue(session.reviewCount.formatted())
             .accessibilityIdentifier("apiLab.toolbar.reviewCount")
-        LabeledContent("Collection", value: session.isPinned ? "Pinned" : "Not pinned")
-        Text(session.activity.first ?? "Session ready")
+        LabeledContent("集合", value: session.isPinned ? "已置顶" : "未置顶")
+        Text(session.activity.first ?? "会话已就绪")
             .font(.footnote)
             .foregroundStyle(.secondary)
             .accessibilityIdentifier("apiLab.toolbar.lastAction")
@@ -231,14 +231,14 @@ private struct ToolbarRecordList: View {
 
     var body: some View {
         List {
-            Section("Live session") {
+            Section("实时会话") {
                 ToolbarSessionSummary(session: session)
-                Button("Review records", systemImage: "checkmark.seal") { session.review() }
+                Button("检查记录", systemImage: "checkmark.seal") { session.review() }
                     .accessibilityIdentifier("apiLab.toolbar.reviewFallback")
             }
-            Section("Scroll to compare bar minimization") {
+            Section("滚动以比较工具栏最小化效果") {
                 ForEach(session.records, id: \.self) { number in
-                    Label("Demo record \(number)", systemImage: "doc.text")
+                    Label("示例记录 \(number)", systemImage: "doc.text")
                         .padding(.vertical, 4)
                 }
             }
@@ -252,15 +252,15 @@ private struct ToolbarActionList: View {
 
     var body: some View {
         List {
-            Section("All actions remain reachable") {
-                Button("Review records", systemImage: "checkmark.seal") { session.review() }
-                Button(session.isPinned ? "Unpin collection" : "Pin collection", systemImage: "pin") {
+            Section("所有操作均可访问") {
+                Button("检查记录", systemImage: "checkmark.seal") { session.review() }
+                Button(session.isPinned ? "取消置顶集合" : "置顶集合", systemImage: "pin") {
                     session.togglePin()
                 }
-                Button("Reverse record order", systemImage: "arrow.up.arrow.down") { session.toggleSort() }
-                Button("Add demo record", systemImage: "plus") { session.addRecord() }
+                Button("反转记录顺序", systemImage: "arrow.up.arrow.down") { session.toggleSort() }
+                Button("添加示例记录", systemImage: "plus") { session.addRecord() }
             }
-            Section("Session state") { ToolbarSessionSummary(session: session) }
+            Section("会话状态") { ToolbarSessionSummary(session: session) }
         }
     }
 }
@@ -273,19 +273,19 @@ private struct BaselineToolbarSession: View {
     var body: some View {
         NavigationStack {
             ToolbarRecordList(session: session)
-                .navigationTitle("Baseline toolbar")
+                .navigationTitle("基础工具栏")
                 .toolbar {
                     ToolbarItem(placement: .cancellationAction) {
-                        Button("Close", systemImage: "xmark") { dismiss() }
+                        Button("关闭", systemImage: "xmark") { dismiss() }
                             .accessibilityIdentifier("apiLab.toolbar.close")
                     }
                     ToolbarItem(placement: .primaryAction) {
-                        Button("Review", systemImage: "checkmark.seal") { session.review() }
+                        Button("检查", systemImage: "checkmark.seal") { session.review() }
                     }
                     ToolbarItem(placement: .secondaryAction) {
-                        Menu("Collection actions", systemImage: "ellipsis") {
-                            Button("Add demo record", systemImage: "plus") { session.addRecord() }
-                            Button("Reverse record order", systemImage: "arrow.up.arrow.down") { session.toggleSort() }
+                        Menu("集合操作", systemImage: "ellipsis") {
+                            Button("添加示例记录", systemImage: "plus") { session.addRecord() }
+                            Button("反转记录顺序", systemImage: "arrow.up.arrow.down") { session.toggleSort() }
                         }
                     }
                 }
@@ -303,24 +303,24 @@ private struct NativeToolbarSession: View {
 
     var body: some View {
         TabView(selection: $session.selectedTab) {
-            Tab("Records", systemImage: "doc.on.doc", value: 0) {
+            Tab("记录", systemImage: "doc.on.doc", value: 0) {
                 NavigationStack {
                     NativeToolbarRecords(configuration: configuration, session: session, close: { dismiss() })
                 }
             }
-            Tab("Activity", systemImage: "clock", value: 1) {
+            Tab("操作历史", systemImage: "clock", value: 1) {
                 NavigationStack {
                     List(Array(session.activity.enumerated()), id: \.offset) { _, message in
                         Text(message)
                     }
-                    .navigationTitle("Activity")
+                    .navigationTitle("操作历史")
                     .toolbar { closeButton }
                 }
             }
-            Tab("Actions", systemImage: "checklist", value: 2) {
+            Tab("操作", systemImage: "checklist", value: 2) {
                 NavigationStack {
                     ToolbarActionList(session: session)
-                        .navigationTitle("All actions")
+                        .navigationTitle("全部操作")
                         .toolbar { closeButton }
                 }
             }
@@ -331,7 +331,7 @@ private struct NativeToolbarSession: View {
 
     private var closeButton: some ToolbarContent {
         ToolbarItem(placement: .cancellationAction) {
-            Button("Close", systemImage: "xmark") { dismiss() }
+            Button("关闭", systemImage: "xmark") { dismiss() }
                 .accessibilityIdentifier("apiLab.toolbar.close")
         }
     }
@@ -348,10 +348,10 @@ private struct NativeToolbarRecords: View {
 
     var body: some View {
         ToolbarRecordList(session: session)
-            .navigationTitle("Toolbar records")
+            .navigationTitle("工具栏记录")
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button("Close", systemImage: "xmark", action: close)
+                    Button("关闭", systemImage: "xmark", action: close)
                         .accessibilityIdentifier("apiLab.toolbar.close")
                 }
                 ToolbarItem(placement: .primaryAction) {
@@ -361,21 +361,21 @@ private struct NativeToolbarRecords: View {
                 .axisBehavior(axisBehavior)
 
                 ToolbarItem(placement: .topBarPinnedTrailing) {
-                    Button(session.isPinned ? "Unpin" : "Pin", systemImage: session.isPinned ? "pin.fill" : "pin") {
+                    Button(session.isPinned ? "取消置顶" : "置顶", systemImage: session.isPinned ? "pin.fill" : "pin") {
                         session.togglePin()
                     }
                     .accessibilityIdentifier("apiLab.toolbar.pin")
                 }
                 ToolbarItem(placement: .primaryAction) {
-                    Button("Reverse order", systemImage: "arrow.up.arrow.down") { session.toggleSort() }
+                    Button("反转顺序", systemImage: "arrow.up.arrow.down") { session.toggleSort() }
                 }
                 .visibilityPriority(.low)
 
                 ToolbarOverflowMenu {
-                    Button("Add demo record", systemImage: "plus") { session.addRecord() }
+                    Button("添加示例记录", systemImage: "plus") { session.addRecord() }
                         .accessibilityIdentifier("apiLab.toolbar.overflowAdd")
-                    Button("Session summary", systemImage: "chart.bar") { showingSummary = true }
-                    Button("Review records", systemImage: "checkmark.seal") { session.review() }
+                    Button("会话摘要", systemImage: "chart.bar") { showingSummary = true }
+                    Button("检查记录", systemImage: "checkmark.seal") { session.review() }
                 }
             }
             .toolbarVerticalCompressionBehavior(compressionBehavior)
@@ -383,16 +383,16 @@ private struct NativeToolbarRecords: View {
             .sheet(isPresented: $showingSummary) {
                 NavigationStack {
                     List {
-                        Section("Live values") { ToolbarSessionSummary(session: session) }
-                        Section("Preferred vertical context") {
+                        Section("实时数据") { ToolbarSessionSummary(session: session) }
+                        Section("垂直工具栏偏好") {
                             Text(edgeDescription)
-                            Text("The edge is a system preference, not proof that a bar is currently visible. No custom side rail is drawn.")
+                            Text("此边缘信息表示系统偏好，并不代表工具栏当前可见。示例不会绘制自定义侧边工具栏。")
                         }
                     }
-                    .navigationTitle("Session summary")
+                    .navigationTitle("会话摘要")
                     .toolbar {
                         ToolbarItem(placement: .confirmationAction) {
-                            Button("Done") { showingSummary = false }
+                            Button("完成") { showingSummary = false }
                         }
                     }
                 }
@@ -425,8 +425,8 @@ private struct NativeToolbarRecords: View {
     }
 
     private var edgeDescription: String {
-        guard let preferredVerticalEdge else { return "None in this context" }
-        return preferredVerticalEdge == .leading ? "Leading edge preferred" : "Trailing edge preferred"
+        guard let preferredVerticalEdge else { return "当前环境中无此偏好" }
+        return preferredVerticalEdge == .leading ? "优先起始侧边缘" : "优先末尾侧边缘"
     }
 }
 
@@ -440,14 +440,14 @@ private struct NativeReviewControl: View {
     var body: some View {
         Button(action: action) {
             if preferredVerticalEdge == nil {
-                Label("Review", systemImage: "checkmark.seal")
+                Label("检查", systemImage: "checkmark.seal")
             } else {
-                Label("Review", systemImage: "checkmark.seal")
+                Label("检查", systemImage: "checkmark.seal")
                     .labelStyle(.iconOnly)
             }
         }
-        .accessibilityLabel("Review records")
-        .accessibilityValue("\(reviewCount) reviews")
+        .accessibilityLabel("检查记录")
+        .accessibilityValue("已检查 \(reviewCount) 次")
         .accessibilityIdentifier("apiLab.toolbar.review")
     }
 }

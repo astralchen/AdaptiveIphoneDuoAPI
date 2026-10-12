@@ -5,9 +5,10 @@ let project = Project(
     settings: .settings(
         base: [
             "SWIFT_VERSION": "6.0",
-            "SWIFT_STRICT_CONCURRENCY": "complete"
-            // Native 27.1 demo symbols are opt-in. Automation adds DUO_SDK to
-            // SWIFT_ACTIVE_COMPILATION_CONDITIONS only with DUO_SDK=1.
+            "DEVELOPMENT_LANGUAGE": "zh-Hans",
+            "SWIFT_STRICT_CONCURRENCY": "complete",
+            // 默认启用原生演示分支，编译需要包含对应 API 的 iOS 27.1 SDK。
+            "SWIFT_ACTIVE_COMPILATION_CONDITIONS": "$(inherited) DUO_SDK"
         ]
     ),
     targets: [
@@ -20,7 +21,8 @@ let project = Project(
             infoPlist: .extendingDefault(
                 with: [
                     "UILaunchScreen": [:],
-                    "NSCameraUsageDescription": "Show a live rear-camera preview in the Camera API demo.",
+                    "CFBundleLocalizations": ["zh-Hans"],
+                    "NSCameraUsageDescription": "用于在相机 API 示例中显示后置相机实时预览。",
                     "UISupportedInterfaceOrientations": [
                         "UIInterfaceOrientationPortrait",
                         "UIInterfaceOrientationLandscapeLeft",
