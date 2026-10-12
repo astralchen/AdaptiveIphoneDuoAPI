@@ -28,7 +28,7 @@
 
 演示文稿保持主线简洁，将格式化的 Swift 代码与相关 UI 配对，并以致谢结束。不另设参考资料或附录页；来源链接和较长技术细节保留在演讲者备注及这些指南中。备注标明应用自定义的辅助类型和省略的上下文。本版本在同一应用中加入可执行示例，并同步实现状态。源代码存在、SDK 编译成功与实际设备行为属于不同证据层级。当前中文版本已通过 Xcode 27.1 构建、18 项单元测试和 7 项 UI 测试，完整硬件验证仍待执行。
 
-设计指导遵循 Apple 的 *Design for iPhone Duo*：保留同一层级和相同功能，使用实际窗口 Trait 与安全区域，让系统组件提供受支持的适配。外屏 Compact、内屏 Regular 是有用的设计描述，不能作为识别硬件的规则。多任务和固定的 Picture in Picture 可改变应用的可用空间。
+设计指导遵循 Apple 的 *为 iPhone Duo 设计*：保留同一层级和相同功能，使用实际窗口 Trait 与安全区域，让系统组件提供受支持的适配。外屏 Compact、内屏 Regular 是有用的设计描述，不能作为识别硬件的规则。多任务和固定的 Picture in Picture 可改变应用的可用空间。
 
 Xcode 27.1 中的 Apple **App Resizability** 由应用现代化 skill 更名而来，支持 SwiftUI 和 Duo。它辅助 Coding Agent 修改源码。系统容器适配自身 UI；开发者仍需决定自定义内容如何适配及状态如何保留。没有一个运行时 modifier 能修复整个应用。
 
@@ -91,13 +91,13 @@ API 清单见 [API 采用指南](API_Adoption_Guide.md)；skill、导出及整�
 
 ## 资料来源
 
-- [Design for iPhone Duo](https://developer.apple.com/videos/play/tech-talks/111466/)：设计原则、安全区域、内外屏布局、Sheet 和折叠处避让。
-- [Prepare your app，App Resizability 位于 09:12](https://developer.apple.com/videos/play/tech-talks/111461/?time=552)
-- [Raise the bar with iPhone Duo](https://developer.apple.com/videos/play/tech-talks/111462/)
-- [Strike a pose with adaptive layouts](https://developer.apple.com/videos/play/tech-talks/111463/)
-- [Multiple displays and scenes](https://developer.apple.com/videos/play/tech-talks/111464/)
-- [What's new in SwiftUI，WWDC26](https://developer.apple.com/videos/play/wwdc2026/269/)
-- [Modernize your UIKit app，WWDC26](https://developer.apple.com/videos/play/wwdc2026/278/)
+- [为 iPhone Duo 设计](https://developer.apple.com/videos/play/tech-talks/111466/)：设计原则、安全区域、内外屏布局、Sheet 和折叠处避让。
+- [适配应用，App Resizability 位于 09:12](https://developer.apple.com/videos/play/tech-talks/111461/?time=552)
+- [使用 iPhone Duo 提升工具栏体验](https://developer.apple.com/videos/play/tech-talks/111462/)
+- [姿态与自适应布局](https://developer.apple.com/videos/play/tech-talks/111463/)
+- [多显示屏与 Scene](https://developer.apple.com/videos/play/tech-talks/111464/)
+- [SwiftUI 新功能，WWDC26](https://developer.apple.com/videos/play/wwdc2026/269/)
+- [将 UIKit 应用现代化，WWDC26](https://developer.apple.com/videos/play/wwdc2026/278/)
 - [State 与 ContentBuilder 迁移，TN3211](https://developer.apple.com/documentation/technotes/tn3211-resolving-swiftui-source-incompatibilities-for-state-and-contentbuilder)
 
 ## 其他适配细节
@@ -140,6 +140,6 @@ API 清单见 [API 采用指南](API_Adoption_Guide.md)；skill、导出及整�
 
 布局变化时保持选择状态和模型归属稳定，不从 `body` 发起请求或执行高开销处理。调整尺寸应重新排列同一体验，避免重复工作。示例在各自状态持有者的生命周期内保留状态，但此处未测得性能提升。
 
-分析真实的窗口调整、旋转、标签页和 Sheet 过渡。使用 SwiftUI Instrument 定位高开销或重复更新，通过 Cause & Effect Graph 追踪依赖，再用 Time Profiler 检查 CPU 工作。完成针对性修改后，比较等价运行。参见 [Optimize SwiftUI performance with Instruments](https://developer.apple.com/videos/play/wwdc2025/306/) 和 [Power and Performance Group Lab](https://developer.apple.com/videos/play/wwdc2026/8003/)。
+分析真实的窗口调整、旋转、标签页和 Sheet 过渡。使用 SwiftUI Instrument 定位高开销或重复更新，通过 Cause & Effect Graph 追踪依赖，再用 Time Profiler 检查 CPU 工作。完成针对性修改后，比较等价运行。参见 [使用 Instruments 优化 SwiftUI 性能](https://developer.apple.com/videos/play/wwdc2025/306/) 和 [功耗与性能集体研讨](https://developer.apple.com/videos/play/wwdc2026/8003/)。
 
-`Task {}` 创建异步工作，但本身不会将 CPU 密集工作移出 Main Actor。以明确的隔离和安全的数据传递分离高开销非 UI 处理，再在所属 Actor 上发布 UI 状态。参见 [Explore concurrency in SwiftUI](https://developer.apple.com/videos/play/wwdc2025/266/)。不能仅凭这些截图声称性能已提升或运行验证已完成。
+`Task {}` 创建异步工作，但本身不会将 CPU 密集工作移出 Main Actor。以明确的隔离和安全的数据传递分离高开销非 UI 处理，再在所属 Actor 上发布 UI 状态。参见 [探索 SwiftUI 并发](https://developer.apple.com/videos/play/wwdc2025/266/)。不能仅凭这些截图声称性能已提升或运行验证已完成。

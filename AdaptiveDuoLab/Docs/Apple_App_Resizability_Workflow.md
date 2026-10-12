@@ -6,7 +6,7 @@
 
 ## 补充说明 App Resizability skill
 
-Apple 的 **App Resizability** skill 随 **Xcode 27.1** 提供。它由 WWDC26 推出的应用现代化 skill 更名而来，现已扩展支持 **SwiftUI 和 iPhone Duo**。Apple 在 [Prepare your app for iPhone Duo，9:12](https://developer.apple.com/videos/play/tech-talks/111461/?time=552) 中介绍了新名称。
+Apple 的 **App Resizability** skill 随 **Xcode 27.1** 提供。它由 WWDC26 推出的应用现代化 skill 更名而来，现已扩展支持 **SwiftUI 和 iPhone Duo**。Apple 在 [为 iPhone Duo 适配应用，9:12](https://developer.apple.com/videos/play/tech-talks/111461/?time=552) 中介绍了新名称。
 
 | Apple 提供的 skill | 适用场景 |
 | --- | --- |
@@ -14,7 +14,7 @@ Apple 的 **App Resizability** skill 随 **Xcode 27.1** 提供。它由 WWDC26 �
 | SwiftUI Specialist Skill — Xcode 27 | 审阅 SwiftUI 实现、数据流、性能和正确性。 |
 | What’s New In SwiftUI Skill — Xcode 27 | 根据最新框架指导，辅助采用新的 SwiftUI API。 |
 
-后两项的名称及其在 Coding Assistant 中的可用性，记录于 [What’s new in SwiftUI](https://developer.apple.com/videos/play/wwdc2026/269/)。这些 skill 用于开发阶段，并非 SwiftUI modifier、链接到应用中的库，也不是应用检查页面的功能。
+后两项的名称及其在 Coding Assistant 中的可用性，记录于 [SwiftUI 新功能](https://developer.apple.com/videos/play/wwdc2026/269/)。这些 skill 用于开发阶段，并非 SwiftUI modifier、链接到应用中的库，也不是应用检查页面的功能。
 
 ## 三类自动行为
 
@@ -24,17 +24,17 @@ Apple 的 **App Resizability** skill 随 **Xcode 27.1** 提供。它由 WWDC26 �
 | 使用较新的 SDK 构建 | iOS 27.1 SDK 启用 Apple 介绍的更完整 Duo 屏幕布局和更新后的标准工具栏行为。 | 与 SDK 兼容的构建，并验证最终布局。升级 SDK 不要求提高本应用的 iOS 17 最低部署版本。 |
 | App Resizability 与 Coding Agent 配合 | Agent 使用项目上下文和 skill 指导，提出或执行源代码修改。 | 明确的范围、代码审阅、成功的构建与测试，以及用户体验验证。 |
 
-Apple 在 [Prepare your app for iPhone Duo，0:30](https://developer.apple.com/videos/play/tech-talks/111461/?time=30) 和 [5:01](https://developer.apple.com/videos/play/tech-talks/111461/?time=301) 演示了前两类机制。现有文档并未提供一个只需一行代码就能修复应用所有自定义页面的运行时 API。
+Apple 在 [为 iPhone Duo 适配应用，0:30](https://developer.apple.com/videos/play/tech-talks/111461/?time=30) 和 [5:01](https://developer.apple.com/videos/play/tech-talks/111461/?time=301) 演示了前两类机制。现有文档并未提供一个只需一行代码就能修复应用所有自定义页面的运行时 API。
 
-早期应用现代化 skill 的演示工作包括替换主屏幕引用、更新依赖方向的布局，以及将旧式 UIKit 应用生命周期代码迁移到 Scene。Apple 也说明，复杂工作可能需要提问，未完成的大型任务可能记录在注释中。参见 [Modernize your UIKit app，14:07](https://developer.apple.com/videos/play/wwdc2026/278/?time=847)。应将其视为辅助实现流程，并验证结果。
+早期应用现代化 skill 的演示工作包括替换主屏幕引用、更新依赖方向的布局，以及将旧式 UIKit 应用生命周期代码迁移到 Scene。Apple 也说明，复杂工作可能需要提问，未完成的大型任务可能记录在注释中。参见 [将 UIKit 应用现代化，14:07](https://developer.apple.com/videos/play/wwdc2026/278/?time=847)。应将其视为辅助实现流程，并验证结果。
 
 ## 应用于整个现有 workspace
 
 1. 在版本控制中保存项目检查点，然后用 Xcode 27.1 打开 `AdaptiveDuoLab.xcworkspace`。选择 `AdaptiveDuoLab` scheme 和已安装的 Simulator 运行环境。除非另有产品决策，否则保持 iOS 17 最低部署版本。
-2. 打开已配置 Agent 的 Coding Assistant。输入 `/` 查看已加载的 skill 和命令，选择界面中显示的 App Resizability skill。使用补全功能，不要假定斜杠命令的拼写。Apple 在 [Coding Intelligence for Beginners，5:31](https://developer.apple.com/videos/play/wwdc2026/8007/?time=331) 中介绍了此发现机制。
+2. 打开已配置 Agent 的 Coding Assistant。输入 `/` 查看已加载的 skill 和命令，选择界面中显示的 App Resizability skill。使用补全功能，不要假定斜杠命令的拼写。Apple 在 [面向初学者的 Coding Intelligence，5:31](https://developer.apple.com/videos/play/wwdc2026/8007/?time=331) 中介绍了此发现机制。
 3. 向 Agent 提供整个 workspace 和下方提示词。文件列表只是初始索引，还应要求它检查相关文件和 API 实验室。
 4. 检查建议的修改及其对现有流程的影响。要求 Agent 构建项目、运行测试、修复失败项，并列出无法完成的检查。
-5. 在 Device Hub 中测试不同宽度和 Duo 姿态，再在真机上验证适用流程。Apple 在 [Modernize your UIKit app，8:19](https://developer.apple.com/videos/play/wwdc2026/278/?time=499) 中演示了窗口大小调整工具。
+5. 在 Device Hub 中测试不同宽度和 Duo 姿态，再在真机上验证适用流程。Apple 在 [将 UIKit 应用现代化，8:19](https://developer.apple.com/videos/play/wwdc2026/278/?time=499) 中演示了窗口大小调整工具。
 
 为 AdaptiveDuoLab 编写的项目提示词建议：
 
@@ -101,7 +101,7 @@ Main Actor 工作和集合渲染。
 
 ## 将 Apple skill 导出到其他编程工具
 
-Apple 在 [Modernize your UIKit app，15:05](https://developer.apple.com/videos/play/wwdc2026/278/?time=905) 中公开了以下命令：
+Apple 在 [将 UIKit 应用现代化，15:05](https://developer.apple.com/videos/play/wwdc2026/278/?time=905) 中公开了以下命令：
 
 ```bash
 xcrun agent skills export

@@ -160,7 +160,7 @@ UIKit 会话演示导航项分组、`pinnedTrailingGroup`、由导航控制器�
 
 ## 运行项目
 
-1. 从 [Apple Developer Downloads](https://developer.apple.com/download/) 安装 [Xcode](https://developer.apple.com/xcode/)。
+1. 从 [Apple 开发者下载](https://developer.apple.com/download/) 安装 [Xcode](https://developer.apple.com/xcode/)。
 2. 打开 `AdaptiveDuoLab/AdaptiveDuoLab.xcworkspace`，选择 **AdaptiveDuoLab** scheme。
 3. 当前项目默认启用 `DUO_SDK`，完整原生 Duo 示例需要 **Xcode 27.1 和 iOS 27.1 SDK**，并选择兼容的运行环境。
 4. 如需使用 **iOS 26 SDK 或更高版本**构建基础版本，请从对应配置的 **Active Compilation Conditions** 中移除 `DUO_SDK`，并保留其他已有值。
@@ -177,7 +177,11 @@ UIKit 会话演示导航项分组、`pinnedTrailingGroup`、由导航控制器�
 
 ## Apple 资源
 
-- [Prepare your app for iPhone Duo](https://developer.apple.com/videos/play/tech-talks/111461/)
-- [Raise the bar with iPhone Duo](https://developer.apple.com/videos/play/tech-talks/111462/)
-- [Strike a pose with adaptive layouts](https://developer.apple.com/videos/play/tech-talks/111463/)
-- [Design for iPhone Duo](https://developer.apple.com/videos/play/tech-talks/111466/)
+- [为 iPhone Duo 适配应用](https://developer.apple.com/videos/play/tech-talks/111461/)
+- [使用 iPhone Duo 提升工具栏体验](https://developer.apple.com/videos/play/tech-talks/111462/)
+- [姿态与自适应布局](https://developer.apple.com/videos/play/tech-talks/111463/)
+- [为 iPhone Duo 设计](https://developer.apple.com/videos/play/tech-talks/111466/)
+
+## 许可证
+
+项目使用 [Apache License 2.0](LICENSE)，另附[中文参考译文](LICENSE.zh-CN.md)。

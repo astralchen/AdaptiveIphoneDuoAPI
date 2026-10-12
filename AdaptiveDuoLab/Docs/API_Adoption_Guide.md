@@ -87,10 +87,10 @@ SwiftUI 没有能修复全项目所有自定义布局的开关。Apple **App Res
 if #available(iOS 27.1, *) {
     NativeArrangementContent(items: items, category: category)
 } else {
-    fallback("Run iOS 27.1 or later.")
+    fallback("请使用 iOS 27.1 或更高版本。")
 }
 #else
-fallback("Build the native example using the 27.1 SDK.")
+fallback("请使用 27.1 SDK 构建原生示例。")
 #endif
 ```
 
@@ -99,18 +99,18 @@ fallback("Build the native example using the 27.1 SDK.")
 以下保留原演示包在 Mac 解压目录中的脚本用法；当前仓库未包含 `Automation/`，请直接使用 Xcode 运行和测试：
 
 ```bash
-# Native API examples: enables DUO_SDK and opens Settings
+# 原生 API 示例：启用 DUO_SDK 并打开设置
 DEVICE_ID="your-simulator-udid" ./Automation/run-api-demos.sh
 ```
 
 原快捷命令复用 SDK 验证。基础和显式原生命令如下：
 
 ```bash
-# Existing baseline build and test path
+# 现有基础构建与测试路径
 ./Automation/run-demo.sh -demo-tab Settings
 ./Automation/run-tests.sh
 
-# Native demo: use an installed Simulator UDID and selected Xcode 27.1 SDK
+# 原生示例：使用已安装的 Simulator UDID 和选定的 Xcode 27.1 SDK
 DUO_SDK=1 DEVICE_ID="your-simulator-udid" ./Automation/run-demo.sh -demo-tab Settings
 DUO_SDK=1 DEVICE_ID="your-simulator-udid" ./Automation/run-tests.sh
 ```
@@ -144,11 +144,11 @@ DUO_SDK=1 DEVICE_ID="your-simulator-udid" ./Automation/run-tests.sh
 
 ## Apple 参考资料
 
-- [Prepare your app for iPhone Duo](https://developer.apple.com/videos/play/tech-talks/111461/)
-- [Raise the bar with iPhone Duo](https://developer.apple.com/videos/play/tech-talks/111462/)
-- [Strike a pose with adaptive layouts on iPhone Duo](https://developer.apple.com/videos/play/tech-talks/111463/)
-- [Leverage multiple displays and scenes on iPhone Duo](https://developer.apple.com/videos/play/tech-talks/111464/)
-- [What is new in SwiftUI — WWDC26](https://developer.apple.com/videos/play/wwdc2026/269/)
+- [为 iPhone Duo 适配应用](https://developer.apple.com/videos/play/tech-talks/111461/)
+- [使用 iPhone Duo 提升工具栏体验](https://developer.apple.com/videos/play/tech-talks/111462/)
+- [iPhone Duo 姿态与自适应布局](https://developer.apple.com/videos/play/tech-talks/111463/)
+- [在 iPhone Duo 上使用多显示屏与 Scene](https://developer.apple.com/videos/play/tech-talks/111464/)
+- [SwiftUI 新功能 — WWDC26](https://developer.apple.com/videos/play/wwdc2026/269/)
 - [ArrangementView](https://developer.apple.com/documentation/swiftui/arrangementview)
 - [GeometryProxy.reservedRegions](https://developer.apple.com/documentation/swiftui/geometryproxy/reservedregions(kind:options:layoutdirectionbehavior:))
 - [onHingeChange](https://developer.apple.com/documentation/swiftui/view/onhingechange(isenabled:_:))
@@ -265,19 +265,19 @@ TN3211 迁移检查应与运行时布局检查分开：在 State 赋值前初始
 在 UIKit 视图或视图控制器中，用局部 Trait 替换全局比例查询：
 
 ```swift
-// Before
+// 修改前
 let screenScale = UIScreen.main.scale
 
-// After
+// 修改后
 let screenScale = traitCollection.displayScale
 ```
 
 这两个声明是替代关系，不能作为同一代码块粘贴到共享作用域。如果操作确实需要 `UIScreen`，在需要时从已连接的窗口解析：
 
 ```swift
-// Within a UIViewController
+// 在 UIViewController 内
 if let screen = view.window?.windowScene?.screen {
-    // Use this screen for the display-specific operation.
+    // 使用此屏幕执行与该显示屏相关的操作。
 }
 ```
 
@@ -294,13 +294,13 @@ backgroundView.frame = view.bounds
 这些语句应放在所属视图控制器的布局阶段。如果 Auto Layout 管理前景 frame，则改用 `safeAreaLayoutGuide` 约束。布局边距也需要独立处理各侧边缘。
 
 ```swift
-// SwiftUI: decorative background (iOS 26+)
+// SwiftUI：装饰性背景（iOS 26+）
 ConcentricRectangle()
     .fill(Color.green)
     .padding(8)
     .ignoresSafeArea()
 
-// UIKit: view configuration (iOS 26+)
+// UIKit：视图配置（iOS 26+）
 myView.cornerConfiguration = .corners(
     radius: .containerConcentric()
 )
@@ -331,7 +331,7 @@ NavigationStack {
     WorkspaceView()
         .toolbar {
             ToolbarItem(placement: .bottomBar) {
-                Button("Review", systemImage: "checkmark.seal") {
+                Button("检查", systemImage: "checkmark.seal") {
                     showReview = true
                 }
             }
@@ -342,7 +342,7 @@ NavigationStack {
 此处 `WorkspaceView` 是应用内容视图，`showReview` 是外围视图持有的状态。应用该模式时保留现有呈现入口。不要仅为获得工具栏，就在已有导航层级外再嵌套一个 `NavigationStack`。
 
 ```swift
-// In the displayed UIViewController, attached to a UINavigationController:
+// 在由 UINavigationController 承载的当前 UIViewController 中：
 toolbarItems = [reviewItem]
 navigationController?.setToolbarHidden(false, animated: false)
 ```
@@ -358,10 +358,10 @@ struct ReviewActionLabel: View {
 
     var body: some View {
         if verticalEdge != nil {
-            Label("Review", systemImage: "checkmark.seal")
+            Label("检查", systemImage: "checkmark.seal")
                 .labelStyle(.iconOnly)
         } else {
-            Label("Review", systemImage: "checkmark.seal")
+            Label("检查", systemImage: "checkmark.seal")
                 .labelStyle(.titleAndIcon)
         }
     }
@@ -385,18 +385,18 @@ struct ReviewActionLabel: View {
 | 优先保留工具栏项，再保留标签栏 | `.toolbarVerticalCompressionBehavior(.prefersToolbarItems)` | `navigationItem.verticalBarCompressionBehavior = .prefersBarItems` | 均为 iOS 27.1 beta。标签栏先压缩；`.automatic` 优先保留标签栏。该偏好用于共享的垂直呈现。 |
 
 ```swift
-// Content inside the existing navigation container; iOS 27.1+.
+// 现有导航容器中的内容，需要 iOS 27.1 或更高版本。
 WorkspaceView()
     .toolbar {
         ToolbarItem(placement: .primaryAction) {
-            Button("Review", systemImage: "checkmark.seal") {
+            Button("检查", systemImage: "checkmark.seal") {
                 showReview = true
             }
         }
         .visibilityPriority(.high)
 
         ToolbarOverflowMenu {
-            Button("Export", systemImage: "square.and.arrow.up") {
+            Button("导出", systemImage: "square.and.arrow.up") {
                 exportRecords()
             }
         }
@@ -421,11 +421,11 @@ UIKit 应使用 `UIDeferredMenuElement` 提供者填充 `additionalOverflowItems
 
 在现有状态归属边界实施修改。`RootView` 已管理标签页、分类和呈现状态；改变容器或组合方式时保留该归属。使用稳定模型 ID，避免每次几何变化都替换整个层级。将请求和高开销派生数据计算移出 `body`。本示例应在每次过渡前后验证筛选记录、分类和呈现方式。这些属于集成检查，不是本版本新增运行时实现。
 
-两张内容重叠的手机截图提供一般性能建议。应将其作为调查线索，技术依据来自 Apple 原始材料。[WWDC26 Power and Performance Group Lab](https://developer.apple.com/videos/play/wwdc2026/8003/) 建议测量实际瓶颈、检查不必要更新，并使用真实数据和条件。不能从布局正确或流畅的 Simulator 截图推断性能提升。
+两张内容重叠的手机截图提供一般性能建议。应将其作为调查线索，技术依据来自 Apple 原始材料。[WWDC26 功耗与性能集体研讨](https://developer.apple.com/videos/play/wwdc2026/8003/) 建议测量实际瓶颈、检查不必要更新，并使用真实数据和条件。不能从布局正确或流畅的 Simulator 截图推断性能提升。
 
 使用 [SwiftUI Instruments 工作流程](https://developer.apple.com/videos/play/wwdc2025/306/) 检查耗时的 View Body 更新和重复失效。沿 Cause & Effect Graph 查找触发工作的状态或依赖，再在 Time Profiler 中检查所选时间区间。针对一项修改，比较等价的窗口调整、旋转、滚动和 Sheet 流程。保留 Trace，并记录设备、构建、数据规模和辅助功能设置。
 
-并发需要明确设计：将同步 CPU 密集代码包装在 `Task {}` 中，不会自动使其脱离 Main Actor。在适当隔离边界后执行高开销处理，安全传递数据，并在所属 Actor 发布 UI 变化。SwiftData 模型和 Context 必须保持隔离，不要随意传给 Detached Task。参见 [Explore concurrency in SwiftUI](https://developer.apple.com/videos/play/wwdc2025/266/)。
+并发需要明确设计：将同步 CPU 密集代码包装在 `Task {}` 中，不会自动使其脱离 Main Actor。在适当隔离边界后执行高开销处理，安全传递数据，并在所属 Actor 发布 UI 变化。SwiftData 模型和 Context 必须保持隔离，不要随意传给 Detached Task。参见 [探索 SwiftUI 并发](https://developer.apple.com/videos/play/wwdc2025/266/)。
 
 App Resizability 可辅助审查固定尺寸、容器用法、安全区域假设和自定义工具栏内容。审阅建议修改，构建基础与原生路径，再测试过渡、辅助功能、状态连续性和响应性。当前原生构建及上述测试已完成；此处未执行随附 skill、采集 Instruments Trace，或完成全部真机行为验证。演示文稿仍使用原有参考截图。
 

@@ -21,7 +21,7 @@ struct AdaptiveDuoLabApp: App {
                 reset: arguments.contains("-reset-data")
             )
         } catch {
-            fatalError("Unable to create the demo database: \(error)")
+            fatalError("无法创建演示数据库： \(error)")
         }
     }
 

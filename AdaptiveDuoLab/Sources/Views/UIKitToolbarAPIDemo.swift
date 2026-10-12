@@ -163,7 +163,7 @@ private final class UIKitToolbarRecordsController: UITableViewController {
         super.init(style: .insetGrouped)
     }
 
-    required init?(coder: NSCoder) { fatalError("Use the programmatic initializer") }
+    required init?(coder: NSCoder) { fatalError("请使用代码初始化器") }
 
     override func viewDidLoad() {
         super.viewDidLoad()

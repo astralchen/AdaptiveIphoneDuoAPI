@@ -178,13 +178,13 @@ final class AdaptiveDuoLabUITests: XCTestCase {
 
     private func assertValue(_ value: String, for identifier: String, in app: XCUIApplication) {
         let element = app.descendants(matching: .any).matching(identifier: identifier).firstMatch
-        XCTAssertTrue(element.waitForExistence(timeout: 5), "Missing \(identifier)")
+        XCTAssertTrue(element.waitForExistence(timeout: 5), "未找到 \(identifier)")
         let expectation = XCTNSPredicateExpectation(
             predicate: NSPredicate(format: "value == %@", value),
             object: element
         )
         XCTAssertEqual(XCTWaiter.wait(for: [expectation], timeout: 3), .completed,
-                       "Expected \(identifier) to expose \(value)")
+                       "预期 \(identifier) 的值为 \(value)")
     }
 
     private func assertReviewState(in app: XCUIApplication) {

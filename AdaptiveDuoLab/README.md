@@ -118,6 +118,6 @@ DUO_SDK=1 DEVICE_ID="your-simulator-udid" ./Automation/run-tests.sh
 - [TabView](https://developer.apple.com/documentation/swiftui/tabview)
 - [Tab](https://developer.apple.com/documentation/swiftui/tab)
 - [NavigationSplitView](https://developer.apple.com/documentation/swiftui/navigationsplitview)
-- [Raise the bar with iPhone Duo，03:30](https://developer.apple.com/videos/play/tech-talks/111462/?time=210)
+- [使用 iPhone Duo 提升工具栏体验，03:30](https://developer.apple.com/videos/play/tech-talks/111462/?time=210)
 
 更新于 2026 年 10 月 12 日。
