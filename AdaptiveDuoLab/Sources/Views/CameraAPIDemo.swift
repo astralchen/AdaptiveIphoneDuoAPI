@@ -394,3 +394,11 @@ private final class CameraPreviewUIView: UIView {
         previewLayer.session = nil
     }
 }
+
+#if DEBUG
+#Preview("相机 · 未启动") {
+    NavigationStack {
+        CameraAPIDemo()
+    }
+}
+#endif

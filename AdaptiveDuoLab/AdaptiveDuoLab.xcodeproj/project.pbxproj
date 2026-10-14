@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		DA1100000000000000000001 /* PreviewRuntimeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA1100000000000000000002 /* PreviewRuntimeTests.swift */; };
+		0350A0B1C2D3E4F506070801 /* PreviewSupport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0350A0B1C2D3E4F506070802 /* PreviewSupport.swift */; };
 		0130A0B1C2D3E4F506070801 /* AppTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0130A0B1C2D3E4F506070803 /* AppTab.swift */; };
 		0130A0B1C2D3E4F506070802 /* DemoSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0130A0B1C2D3E4F506070804 /* DemoSettingsView.swift */; };
 		0240A0B1C2D3E4F506070801 /* APICatalog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0240A0B1C2D3E4F506070804 /* APICatalog.swift */; };
@@ -85,6 +87,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		DA1100000000000000000002 /* PreviewRuntimeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewRuntimeTests.swift; sourceTree = "<group>"; };
+		0350A0B1C2D3E4F506070802 /* PreviewSupport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewSupport.swift; sourceTree = "<group>"; };
 		0130A0B1C2D3E4F506070803 /* AppTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppTab.swift; sourceTree = "<group>"; };
 		0130A0B1C2D3E4F506070804 /* DemoSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoSettingsView.swift; sourceTree = "<group>"; };
 		0240A0B1C2D3E4F506070804 /* APICatalog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APICatalog.swift; sourceTree = "<group>"; };
@@ -168,6 +172,7 @@
 			isa = PBXGroup;
 			children = (
 				A71139A0C275242E7781983A /* ReservedRegionPlacementTests.swift */,
+				DA1100000000000000000002 /* PreviewRuntimeTests.swift */,
 				CC9F6EA2B9632E0655FF1282 /* AdaptiveLayoutPolicyTests.swift */,
 			);
 			path = Tests;
@@ -176,6 +181,7 @@
 		345D283FF0315F9AB7CBEE89 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				0350A0B1C2D3E4F506070802 /* PreviewSupport.swift */,
 				F74FC85CC9BFAC8E516C0E56 /* App */,
 				6202DC9CA9515E0A98D3CD1B /* Data */,
 				C5A334218F15F77BE437908D /* Layout */,
@@ -348,6 +354,7 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 2710;
 				TargetAttributes = {
 					0980BB8528B3A6E8E921B5F9 = {
 						TestTargetID = BE310EE66479033A36689B2F;
@@ -406,6 +413,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0350A0B1C2D3E4F506070801 /* PreviewSupport.swift in Sources */,
 				2C19E1503D218C2CC145B479 /* ReservedRegionPlacement.swift in Sources */,
 				EA640EC34773FDD984C838A2 /* UIKitToolbarAPIDemo.swift in Sources */,
 				2AA6CC095A60B2DF5ED67F2C /* PresentationAPIDemo.swift in Sources */,
@@ -436,6 +444,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				236E5DB4773792980A7EED49 /* ReservedRegionPlacementTests.swift in Sources */,
+				DA1100000000000000000001 /* PreviewRuntimeTests.swift in Sources */,
 				3BC8F7775FA864F674D39291 /* AdaptiveLayoutPolicyTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -496,6 +505,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
@@ -531,6 +541,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -541,6 +552,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) DUO_SDK";
 				SWIFT_STRICT_CONCURRENCY = complete;
 				SWIFT_VERSION = 6.0;
@@ -579,6 +591,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
@@ -614,6 +627,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -631,6 +645,7 @@
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) DUO_SDK";
 				SWIFT_STRICT_CONCURRENCY = complete;
 				SWIFT_VERSION = 6.0;

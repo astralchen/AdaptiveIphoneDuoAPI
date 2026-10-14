@@ -7,8 +7,13 @@ struct AdaptiveDuoLabApp: App {
 
     init() {
         let arguments = ProcessInfo.processInfo.arguments
+        var usesMemoryStore = arguments.contains("-ui-testing")
+        #if DEBUG
+        // Canvas 启动应用宿主时也使用内存存储，避免访问正式演示数据库。
+        usesMemoryStore = usesMemoryStore || ProcessInfo.processInfo.environment["XCODE_RUNNING_FOR_PREVIEWS"] == "1"
+        #endif
         let configuration = ModelConfiguration(
-            isStoredInMemoryOnly: arguments.contains("-ui-testing")
+            isStoredInMemoryOnly: usesMemoryStore
         )
 
         do {

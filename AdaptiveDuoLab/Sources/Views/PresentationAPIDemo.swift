@@ -61,3 +61,11 @@ struct PresentationAPIDemo: View {
         }
     }
 }
+
+#if DEBUG
+#Preview("呈现方式") {
+    NavigationStack {
+        PresentationAPIDemo()
+    }
+}
+#endif

@@ -168,3 +168,11 @@ struct RootView: View {
         return Value(rawValue: arguments[index + 1])
     }
 }
+
+#if DEBUG
+#Preview("应用首页") {
+    SampleDataPreview { _ in
+        RootView()
+    }
+}
+#endif

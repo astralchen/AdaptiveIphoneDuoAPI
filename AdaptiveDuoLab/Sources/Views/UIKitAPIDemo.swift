@@ -348,3 +348,11 @@ private final class UIKitTopicDetailController: UIViewController, UITextViewDele
         drafts[topic] = textView.text
     }
 }
+
+#if DEBUG
+#Preview("UIKit 布局") {
+    NavigationStack {
+        UIKitAPIDemo()
+    }
+}
+#endif

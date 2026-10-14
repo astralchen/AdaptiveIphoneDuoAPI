@@ -88,3 +88,37 @@ extension View {
         }
     }
 }
+
+#if DEBUG
+#Preview("记录卡片 · 完整", traits: .sizeThatFitsLayout) {
+    SampleDataPreview { data in
+        if let item = data.items.first {
+            WorkItemCard(item: item, compact: false)
+                .padding()
+                .frame(width: 390)
+                .background(Color(uiColor: .systemGroupedBackground))
+        }
+    }
+}
+
+#Preview("记录卡片 · 紧凑", traits: .sizeThatFitsLayout) {
+    SampleDataPreview { data in
+        if let item = data.items.first(where: { $0.status == .inProgress }) {
+            WorkItemCard(item: item, compact: true)
+                .padding()
+                .frame(width: 300)
+                .background(Color(uiColor: .systemGroupedBackground))
+        }
+    }
+}
+
+#Preview("记录卡片 · 大字体长文本", traits: .sizeThatFitsLayout) {
+    SampleDataPreview { data in
+        WorkItemCard(item: data.longTextItem, compact: false)
+            .padding()
+            .frame(width: 390)
+            .background(Color(uiColor: .systemGroupedBackground))
+    }
+    .environment(\.dynamicTypeSize, .accessibility3)
+}
+#endif

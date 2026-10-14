@@ -78,3 +78,35 @@ struct DemoSettingsView: View {
             .accessibilityIdentifier(id)
     }
 }
+
+#if DEBUG
+private struct DemoSettingsPreview: View {
+    let items: [WorkItem]
+    @State private var category: WorkCategory = .all
+    @State private var presentation: CollectionPresentation = .automatic
+    @State private var pose: DemoPose = .automatic
+
+    private var filteredItems: [WorkItem] {
+        category == .all ? items : items.filter { $0.category == category }
+    }
+
+    var body: some View {
+        NavigationStack {
+            DemoSettingsView(
+                category: $category,
+                presentation: $presentation,
+                pose: $pose,
+                totalItemCount: items.count,
+                filteredItemCount: filteredItems.count,
+                items: filteredItems
+            )
+        }
+    }
+}
+
+#Preview("设置 · 可交互筛选") {
+    SampleDataPreview { data in
+        DemoSettingsPreview(items: data.items)
+    }
+}
+#endif

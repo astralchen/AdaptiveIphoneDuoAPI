@@ -86,3 +86,15 @@ struct LayoutAuditContent: View {
             .accessibilityIdentifier(id)
     }
 }
+
+#if DEBUG
+#Preview("布局检查 · Sheet") {
+    LayoutAuditView(itemCount: 8, pose: .bookFold, presentation: .grid)
+}
+
+#Preview("布局检查 · 导航页面") {
+    NavigationStack {
+        LayoutAuditContent(itemCount: 8, pose: .automatic, presentation: .automatic, category: .all)
+    }
+}
+#endif

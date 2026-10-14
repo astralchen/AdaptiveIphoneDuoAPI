@@ -452,3 +452,11 @@ private struct NativeReviewControl: View {
     }
 }
 #endif
+
+#if DEBUG
+#Preview("SwiftUI 工具栏") {
+    NavigationStack {
+        ToolbarAPIDemo()
+    }
+}
+#endif

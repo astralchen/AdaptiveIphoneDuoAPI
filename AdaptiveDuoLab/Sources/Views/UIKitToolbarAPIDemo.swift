@@ -357,3 +357,11 @@ private final class UIKitToolbarRecordsController: UITableViewController {
         tableView.reloadData()
     }
 }
+
+#if DEBUG
+#Preview("UIKit 工具栏") {
+    NavigationStack {
+        UIKitToolbarAPIDemo()
+    }
+}
+#endif

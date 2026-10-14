@@ -426,3 +426,79 @@ private struct TabletopLayout: View {
         .accessibilityIdentifier("pose.tabletopLayout")
     }
 }
+
+#if DEBUG
+/// 保留可编辑状态，并补齐页面在 RootView 中获得的 Sheet 呈现行为。
+private struct DashboardPreview: View {
+    let items: [WorkItem]
+    @State private var presentation: CollectionPresentation
+    @State private var pose: DemoPose
+    @State private var showsAudit = false
+
+    init(items: [WorkItem], presentation: CollectionPresentation = .automatic, pose: DemoPose = .automatic) {
+        self.items = items
+        _presentation = State(initialValue: presentation)
+        _pose = State(initialValue: pose)
+    }
+
+    var body: some View {
+        NavigationStack {
+            DashboardView(
+                items: items,
+                selectedCategory: .all,
+                presentation: $presentation,
+                pose: $pose,
+                showsAudit: $showsAudit
+            )
+        }
+        .sheet(isPresented: $showsAudit) {
+            LayoutAuditView(itemCount: items.count, pose: pose, presentation: presentation)
+        }
+    }
+}
+
+#Preview("工作区 · 窄屏列表", traits: .fixedLayout(width: 390, height: 844)) {
+    SampleDataPreview { data in
+        DashboardPreview(items: data.items, presentation: .list)
+    }
+}
+
+#Preview("工作区 · 宽屏网格", traits: .fixedLayout(width: 1000, height: 800)) {
+    SampleDataPreview { data in
+        DashboardPreview(items: data.items, presentation: .grid)
+    }
+}
+
+#Preview("工作区 · 书本折叠", traits: .fixedLayout(width: 1000, height: 800)) {
+    SampleDataPreview { data in
+        DashboardPreview(items: data.items, pose: .bookFold)
+    }
+}
+
+#Preview("工作区 · 桌面模式", traits: .fixedLayout(width: 1000, height: 800)) {
+    SampleDataPreview { data in
+        DashboardPreview(items: data.items, pose: .tabletop)
+    }
+}
+
+#Preview("工作区 · 辅助功能大字体", traits: .fixedLayout(width: 390, height: 844)) {
+    SampleDataPreview { data in
+        DashboardPreview(items: data.items)
+    }
+    .environment(\.dynamicTypeSize, .accessibility3)
+}
+
+#Preview("工作区 · 深色网格", traits: .fixedLayout(width: 1000, height: 800)) {
+    SampleDataPreview { data in
+        DashboardPreview(items: data.items, presentation: .grid)
+    }
+    .preferredColorScheme(.dark)
+}
+
+#Preview("工作区 · RTL 列表", traits: .fixedLayout(width: 390, height: 844)) {
+    SampleDataPreview { data in
+        DashboardPreview(items: data.items, presentation: .list)
+    }
+    .environment(\.layoutDirection, .rightToLeft)
+}
+#endif

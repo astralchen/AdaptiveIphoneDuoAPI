@@ -148,3 +148,11 @@ private struct TabDemoSession: View {
         }
     }
 }
+
+#if DEBUG
+#Preview("标签页与侧边栏") {
+    NavigationStack {
+        TabAPIDemo()
+    }
+}
+#endif

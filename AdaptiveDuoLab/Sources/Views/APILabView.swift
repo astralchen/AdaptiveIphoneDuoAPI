@@ -212,3 +212,11 @@ private struct APIDemoDestination: View {
 		}
 	}
 }
+
+#if DEBUG
+#Preview("API 实验室") {
+    SampleDataPreview { data in
+        APILabView(items: data.items, category: .all)
+    }
+}
+#endif

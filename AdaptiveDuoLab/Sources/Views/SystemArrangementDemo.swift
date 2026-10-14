@@ -416,3 +416,13 @@ private struct NativeRegionInspector: View {
     }
 }
 #endif
+
+#if DEBUG
+#Preview("系统布局") {
+    SampleDataPreview { data in
+        NavigationStack {
+            SystemArrangementDemo(items: data.items, category: .all)
+        }
+    }
+}
+#endif

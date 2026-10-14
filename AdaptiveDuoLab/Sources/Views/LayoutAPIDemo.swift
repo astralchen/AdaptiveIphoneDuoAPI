@@ -141,3 +141,11 @@ private struct ConcentricCornerDemo: View {
         }
     }
 }
+
+#if DEBUG
+#Preview("重新布局与圆角") {
+    NavigationStack {
+        LayoutAPIDemo()
+    }
+}
+#endif
